@@ -1,12 +1,13 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { VitePWA } from 'vite-plugin-pwa'  // ← 修正ポイント
+import { VitePWA } from 'vite-plugin-pwa';
+import path from 'path'; // ← これが必要
 
 export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',  // サービスワーカーの自動更新
+      registerType: 'autoUpdate',
       manifest: {
         name: 'Memo App',
         short_name: 'MemoApp',
@@ -14,7 +15,7 @@ export default defineConfig({
         theme_color: '#ffffff',
         background_color: '#ffffff',
         start_url: '/',
-        display: 'standalone',  // フルスクリーンで表示
+        display: 'standalone',
         icons: [
           {
             src: '/icons/icon.png',
@@ -30,4 +31,9 @@ export default defineConfig({
       },
     }),
   ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'), // __dirname を使える
+    },
+  },
 });
