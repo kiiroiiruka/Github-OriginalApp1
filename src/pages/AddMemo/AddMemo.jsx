@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import useMemoStore from '@/store/useMemoStore';
 import Button from '@/components/ui/Button/Button';
-import { formatDateTime } from '@/units/formatDate';  // formatDateをインポート
+import { formatDateTime } from '@/units/formatDate';
 import styles from './AddMemo.module.css';
 import Header from '@/components/layout/Header/Header';
 
@@ -12,12 +12,35 @@ const AddMemo = () => {
 
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [deadline, setDeadline] = useState(''); // ← datetime-local 用
-    const [currentTime, setCurrentTime] = useState(formatDateTime(new Date())); // 現在時刻を表示
-    const [isDeadlinePast, setIsDeadlinePast] = useState(false);  // 締切が過去かどうかの状態
+    const [deadline, setDeadline] = useState('');
+    const [currentTime, setCurrentTime] = useState(formatDateTime(new Date()));
+    const [isDeadlinePast, setIsDeadlinePast] = useState(false);
+    const [isInputFocused, setIsInputFocused] = useState(false);
 
     const addMemo = useMemoStore((state) => state.addMemo);
     const navigate = useNavigate();
+
+    // 入力欄フォーカス検知
+    useEffect(() => {
+        const handleFocus = (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                setIsInputFocused(true);
+            }
+        };
+        const handleBlur = (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                setIsInputFocused(false);
+            }
+        };
+
+        document.addEventListener('focusin', handleFocus);
+        document.addEventListener('focusout', handleBlur);
+
+        return () => {
+            document.removeEventListener('focusin', handleFocus);
+            document.removeEventListener('focusout', handleBlur);
+        };
+    }, []);
 
     const isValidTitle = (text) => {
         const cleaned = text.replace(/\s/g, '');
@@ -29,28 +52,27 @@ const AddMemo = () => {
             id: Date.now(),
             title,
             content,
-            deadline, // ← datetime-local の値をそのまま保存
+            deadline,
             priority,
         };
         addMemo(newMemo);
         navigate(-1);
     };
 
-    // ✅ 時刻を1秒ごとに更新
+    // 現在時刻の更新
     useEffect(() => {
         const intervalId = setInterval(() => {
             setCurrentTime(formatDateTime(new Date()));
-        }, 1000);  // 1秒ごとに更新
-
-        return () => clearInterval(intervalId); // クリーンアップ
+        }, 1000);
+        return () => clearInterval(intervalId);
     }, []);
 
-    // 締切日時が過去かどうかをチェック
+    // 締切が過去か判定
     useEffect(() => {
         if (deadline) {
             const deadlineDate = new Date(deadline);
             const now = new Date();
-            setIsDeadlinePast(deadlineDate < now);  // 現在時刻より締切が過去かどうか
+            setIsDeadlinePast(deadlineDate < now);
         }
     }, [deadline]);
 
@@ -59,14 +81,13 @@ const AddMemo = () => {
             <Header
                 title={`優先度: ${priority}`}
                 onBack={() => navigate(-1)}
+                isInputFocused={isInputFocused}
             />
 
-            {/* ✅ 現在時刻表示 */}
             <div className={styles.currentTime}>
-                <p>現在: {currentTime}</p> {/* 現在時刻を表示 */}
+                <p>現在: {currentTime}</p>
             </div>
 
-            {/* ✅ タイトル入力 */}
             <div className={styles.formGroup}>
                 <label className={styles.label}>タイトル（必須）:</label>
                 <input
@@ -83,7 +104,6 @@ const AddMemo = () => {
                 )}
             </div>
 
-            {/* ✅ 内容入力 */}
             <div className={styles.formGroup}>
                 <label className={styles.label}>内容（最大100文字）:</label>
                 <textarea
@@ -92,12 +112,9 @@ const AddMemo = () => {
                     onChange={(e) => setContent(e.target.value)}
                     className={styles.textarea}
                 />
-                <p className={styles.remainingText}>
-                    残り {100 - content.length} 文字
-                </p>
+                <p className={styles.remainingText}>残り {100 - content.length} 文字</p>
             </div>
 
-            {/* ✅ 日付 + 時刻入力 */}
             <div className={styles.formGroup}>
                 <label className={styles.label}>締切日時:</label>
                 <input
@@ -113,12 +130,11 @@ const AddMemo = () => {
                 )}
             </div>
 
-            {/* ✅ 追加ボタン */}
             <div className={styles.buttonWrapper}>
                 <Button
                     label="追加する"
                     onClick={handleSubmit}
-                    disabled={!isValidTitle(title) || isDeadlinePast} // 締切が過去の場合ボタンを無効化
+                    disabled={!isValidTitle(title) || isDeadlinePast}
                 />
             </div>
         </div>

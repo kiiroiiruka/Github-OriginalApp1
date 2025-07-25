@@ -1,17 +1,19 @@
-// components/ui/Header/Header.jsx
 import React from 'react';
 import styles from './Header.module.css';
 
-const Header = ({ title, onBack }) => {
+const Header = ({ title, onBack, isInputFocused }) => {
     return (
-        <header className={styles.header}>
-            {/* 左端に戻るボタンを表示（onBackが渡された場合のみ） */}
+        <header
+            className={styles.header}
+            style={{
+                position: isInputFocused ? 'static' : 'fixed', // 入力中は固定解除
+            }}
+        >
             {onBack && (
                 <button className={styles.backButton} onClick={onBack}>
                     ← 戻る
                 </button>
             )}
-            {/* タイトルは常に中央に配置 */}
             <h1 className={styles.title}>{title}</h1>
         </header>
     );
