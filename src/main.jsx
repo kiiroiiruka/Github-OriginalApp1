@@ -7,7 +7,7 @@ import "./index.css"
 // サブディレクトリでの動作を考慮して、basename を設定
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter basename="/memoApp">  {/* basenameを追加 */}
+    <BrowserRouter>  {/* basenameを追加 */}
       <App />
     </BrowserRouter>
   </StrictMode>,
