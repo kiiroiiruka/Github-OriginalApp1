@@ -1,0 +1,38 @@
+.header {
+    position: fixed;
+
+    /* あるいは fixed にすると常に画面上部に固定される */
+    left: 0;
+    top: 0;
+    width: 100vw;
+    /* ビューポート幅いっぱい */
+    background-color: #f5f5f5;
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    box-sizing: border-box;
+    /* padding を含めて幅を計算 */
+}
+
+.title {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.backButton {
+    position: absolute;
+    /* 左端に固定 */
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    color: #007bff;
+}
+
+.backButton:hover {
+    text-decoration: underline;
+}

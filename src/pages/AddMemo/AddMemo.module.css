@@ -1,0 +1,87 @@
+/* AddMemo.module.css */
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    /* 余計なマージンを排除 */
+    overflow-x: hidden;
+    /* 横スクロールを防ぐ */
+}
+
+.container {
+    margin-top: 4.0rem;
+    /* ヘッダーの下に余白を追加 */
+
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* 内容とボタンを上下に配置 */
+    height: 100%;
+    /* 高さを画面全体に */
+    overflow-y: auto;
+    /* 必要に応じて縦方向にスクロール */
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.formGroup {
+    margin-bottom: 16px;
+}
+
+.label {
+    font-size: 16px;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 6px;
+    color: #555;
+}
+
+.input,
+.textarea,
+.dateInput {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+}
+
+.input:focus,
+.textarea:focus,
+.dateInput:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
+
+.textarea {
+    height: 100px;
+    resize: none;
+}
+
+.errorText {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 4px;
+}
+
+.remainingText {
+    font-size: 0.85em;
+    color: #666;
+    margin-top: 4px;
+}
+
+.buttonWrapper {
+    margin-top: auto;
+    /* ボタンを下部に配置 */
+    text-align: center;
+    /* 中央揃え */
+}

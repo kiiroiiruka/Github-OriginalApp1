@@ -1,0 +1,80 @@
+/* index.css */
+
+/* すべての要素に対して margin, padding をゼロにする */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* ボックスサイズに padding と border を含める */
+}
+
+/* ボディの設定 */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    /* 行間を少し広げて読みやすくする */
+    background-color: #f8f8f8;
+    /* 背景色の設定 */
+    height: 100vh;
+    /* 画面いっぱいに広げる */
+}
+
+/* HTMLタグの余白もリセット */
+html {
+    height: 100%;
+    /* 高さを100%に設定 */
+}
+
+/* 全体のスタイルを設定 */
+body,
+html {
+    width: 100%;
+}
+
+/* ページ全体のレイアウトに影響する余白を削除 */
+body,
+.container {
+    margin: 0;
+    /* ボディのマージンをゼロ */
+    padding: 0;
+    /* ボディのパディングをゼロ */
+    height: 100%;
+}
+
+/* すべてのリンクやボタンのスタイルもリセット */
+a,
+button {
+    text-decoration: none;
+    /* リンクの下線を消す */
+    outline: none;
+    /* ボタンのアウトラインを消す */
+    background: none;
+    /* ボタンの背景を消す */
+    border: none;
+    /* ボタンの枠線を消す */
+    cursor: pointer;
+    /* ボタンやリンクのカーソルをポインタにする */
+}
+
+/* ページの中央にコンテンツを配置したい場合 */
+.centered-container {
+    display: flex;
+    justify-content: center;
+    /* 横方向の中央揃え */
+    align-items: center;
+    /* 縦方向の中央揃え */
+    height: 100%;
+    /* 高さを100%にしてページ全体を使う */
+}
+
+/* 必要に応じて個別に調整 */
+.container {
+    max-width: 1200px;
+    /* 最大幅を設定 */
+    margin: 0 auto;
+    /* 横方向の中央揃え */
+    padding: 20px;
+    /* 必要に応じて余白を設定 */
+}

@@ -1,0 +1,32 @@
+/* MemoList.module.css */
+.container {
+    margin-top: 4.0rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.buttonGroup {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.deleteContainer {
+    margin: 20px;
+    text-align: center;
+}
+
+.scrollableList {
+    max-height: calc(100vh - 240px);
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.scrollableList .itemLabel {
+    white-space: pre-line;
+    /* 改行タグを認識させる */
+    word-wrap: break-word;
+    /* 単語が長すぎて切れない場合に折り返す */
+}

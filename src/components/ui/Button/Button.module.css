@@ -1,0 +1,31 @@
+.btn {
+    background-color: #1f2937;
+    /* 落ち着いたダークネイビーグレー */
+    color: #ffffff;
+    padding: 0.5em 1em;
+    border: 1px solid #374151;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    box-shadow: none;
+}
+
+.btn:hover {
+    background-color: #111827;
+    /* より暗いホバー色 */
+    border-color: #4b5563;
+}
+
+.btn:active {
+    background-color: #0f172a;
+    border-color: #6b7280;
+}
+
+.btn:disabled {
+    background-color: #e5e7eb;
+    color: #9ca3af;
+    border-color: #d1d5db;
+    cursor: not-allowed;
+}

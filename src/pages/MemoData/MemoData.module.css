@@ -1,0 +1,77 @@
+.container {
+    margin-top: 4.0rem;
+    padding: 1rem;
+    /* メインコンテンツ周りに余白を追加 */
+}
+
+.memoList {
+    padding: 0;
+}
+
+.memoCard {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+    /* 影を追加 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.memoCard:hover {
+    transform: translateY(-5px);
+    /* マウスオーバー時にカードが浮き上がる */
+    box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.15);
+    /* より強い影 */
+}
+
+.memoTitle {
+    font-size: 1.4rem;
+    /* タイトルを大きく */
+    font-weight: bold;
+    color: #333;
+    /* 深い色で強調 */
+    margin-bottom: 0.8rem;
+    /* タイトルと内容の間に余白 */
+    text-transform: capitalize;
+    /* タイトルを最初の文字を大文字に */
+}
+
+.memoContent {
+    font-size: 1.1rem;
+    color: #555;
+    /* テキスト色を少し薄くして、読みやすく */
+    margin-bottom: 1rem;
+    line-height: 1.6;
+    /* 行間を広げて読みやすく */
+}
+
+.memoMeta {
+    font-size: 1rem;
+    color: #777;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* メモの優先度別に色を分ける */
+.priorityHigh {
+    color: #e63946;
+    /* 高優先度 -> 赤 */
+    font-weight: bold;
+}
+
+.priorityMedium {
+    color: #f1fa3c;
+    /* 中優先度 -> 黄色 */
+}
+
+.priorityLow {
+    color: #2a9d8f;
+    /* 低優先度 -> 青緑 */
+}
+
+/* 期限の強調表示 */
+.memoMeta .deadline {
+    font-style: italic;
+}

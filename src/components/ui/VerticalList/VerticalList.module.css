@@ -1,0 +1,19 @@
+.listContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 1rem;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+
+.listItem {
+    width: 100%;
+    text-align: left;
+}
+
+.emptyMessage {
+    color: #6b7280;
+    font-style: italic;
+}

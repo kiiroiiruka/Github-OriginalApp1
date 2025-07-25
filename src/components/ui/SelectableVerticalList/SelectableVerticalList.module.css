@@ -1,0 +1,17 @@
+.listItem {
+    cursor: pointer;
+    padding: 0.5em 0;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+}
+
+.checkboxWrapper {
+    margin-right: 0.5em;
+    /* チェックボックスとタイトルの隙間 */
+}
+
+.title {
+    flex: 1;
+    /* タイトル部分が余白を埋める */
+}

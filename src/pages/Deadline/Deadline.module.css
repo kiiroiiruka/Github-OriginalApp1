@@ -1,0 +1,120 @@
+.container {
+    padding: 1rem;
+    margin-top: 4.0rem;
+
+}
+
+.body {
+    justify-items: center;
+
+}
+
+.toggleGroup {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.toggleButton {
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
+    padding: 8px 16px;
+    margin-right: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.toggleButton:hover {
+    background-color: #f0f0f0;
+    color: black;
+}
+
+.toggleButton.active {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.toggleButton.active:hover {
+    background-color: #2563eb;
+    color: white;
+}
+
+.active {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+.subTitle {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+
+}
+
+.scrollContainer {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+    padding-bottom: 60px;
+    max-height: calc(100vh - 200px);
+}
+
+@keyframes blink-red {
+
+    0%,
+    100% {
+        color: red;
+    }
+
+    50% {
+        color: transparent;
+    }
+}
+
+@keyframes blink-yellow {
+
+    0%,
+    100% {
+        color: yellow;
+    }
+
+    50% {
+        color: transparent;
+    }
+}
+
+.blinkRed {
+    animation: blink-red 1s infinite;
+    font-weight: bold;
+}
+
+.blinkYellow {
+    animation: blink-yellow 1s infinite;
+    font-weight: bold;
+}
+
+.reminder {
+    font-size: 14px;
+    color: gray;
+}
+
+.yellow {
+    color: yellow;
+}
+
+.lightBlue {
+    color: lightblue;
+}
+
+.red {
+    color: red;
+}
+
+/* 時刻表示エリア */
+.dateContainer {
+    font-size: 24px;
+    justify-items: center;
+}
