@@ -1,7 +1,8 @@
+// vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
-import path from 'path'; // ← これが必要
+import path from 'path';
 
 export default defineConfig({
   plugins: [
@@ -29,11 +30,16 @@ export default defineConfig({
           },
         ],
       },
+      workbox: {
+        // 必要に応じてキャッシュの設定を行います
+        skipWaiting: true,
+        clientsClaim: true,
+      },
     }),
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'), // __dirname を使える
+      '@': path.resolve(__dirname, './src'),
     },
   },
 });
