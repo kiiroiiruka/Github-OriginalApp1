@@ -1,6 +1,6 @@
 // Keypad.jsx
 import React, { useState } from "react";
-import { toKatakana } from "wanakana";  // 修正されたインポート
+import { toKatakana } from "wanakana";  // ひらがなカタカナ変換ライブラリ
 import styles from "./Keypad.module.css";
 
 // ひらがなのキー配列
@@ -54,6 +54,7 @@ export default function Keypad({ onSubmit }) {
                             key={char}
                             className={styles.key}
                             onClick={() => handleInput(char)}
+                            onTouchStart={(e) => e.preventDefault()} // スマホタッチ対応
                         >
                             {char}
                         </button>
