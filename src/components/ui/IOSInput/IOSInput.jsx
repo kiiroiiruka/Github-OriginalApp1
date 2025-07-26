@@ -4,9 +4,14 @@ import { toHiragana, toKatakana } from "wanakana";
 import axios from "axios";
 import styles from "./IOSInput.module.css";
 
-const isIOS = () =>
-    true;
+const isIOSStandalone = () => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isInStandalone = window.navigator.standalone === true
+        || window.matchMedia("(display-mode: standalone)").matches;
 
+    // iOS かつ PWA(ホーム画面から起動)の場合だけ true
+    return isIOS && isInStandalone;
+};
 export default function IOSInput({ value, onChange, as = "input", maxLength, placeholder = "ここをタップして入力" }) {
     const [showKeypad, setShowKeypad] = useState(false);
     const [romajiInput, setRomajiInput] = useState("");
@@ -159,7 +164,7 @@ export default function IOSInput({ value, onChange, as = "input", maxLength, pla
     };
 
     // iOS以外では通常のinputを使用
-    if (!isIOS()) {
+    if (!isIOSStandalone()) {
         const Component = as;
         return (
             <Component
