@@ -46,7 +46,7 @@ const AddMemo = () => {
         }, 1000);
         return () => clearInterval(intervalId);
     }, []);
-
+    const [text, setText] = useState("");
     return (
         <div className={styles.container}>
             <Header title={`優先度: ${priority}`} onBack={() => navigate(-1)} />
@@ -54,7 +54,18 @@ const AddMemo = () => {
             <div className={styles.currentTime}>
                 <p>現在: {currentTime}</p>
             </div>
-
+            <input
+                type="text"
+                placeholder="ここに入力"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                style={{
+                    padding: "8px",
+                    fontSize: "16px",
+                    width: "100%",
+                    marginBottom: "20px",
+                }}
+            />
             {/* タイトル入力 */}
             <div className={styles.formGroup}>
                 <label className={styles.label}>タイトル（必須）:</label>
