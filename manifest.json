@@ -1,6 +1,6 @@
 {
-    "name": "Memo App",
-    "short_name": "MemoApp",
+    "name": "ミニメモ",
+    "short_name": "ミニメモ",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
