@@ -1,6 +1,6 @@
 // Keypad.jsx
 import React, { useState } from "react";
-import wanakana from "wanakana";
+import { toKatakana } from "wanakana";  // 修正されたインポート
 import styles from "./Keypad.module.css";
 
 // ひらがなのキー配列
@@ -28,7 +28,7 @@ export default function Keypad({ onSubmit }) {
 
     // 変換処理: ひらがなをカタカナに変換
     const handleConvert = () => {
-        const kana = wanakana.toKatakana(input);  // 入力されたひらがなをカタカナに変換
+        const kana = toKatakana(input);  // 入力されたひらがなをカタカナに変換
         setConvertedText(kana);
     };
 
