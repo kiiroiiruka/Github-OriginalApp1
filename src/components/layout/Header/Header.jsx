@@ -3,6 +3,7 @@ import React from 'react';
 import styles from './Header.module.css';
 
 const Header = ({ title, onBack }) => {
+
     return (
         <header className={styles.header}>
             {/* 左端に戻るボタンを表示（onBackが渡された場合のみ） */}
