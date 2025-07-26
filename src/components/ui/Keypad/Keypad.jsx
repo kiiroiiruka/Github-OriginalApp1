@@ -1,6 +1,7 @@
 // Keypad.jsx
 import React, { useState } from "react";
 import { toKatakana } from "wanakana";  // ひらがなカタカナ変換ライブラリ
+import { toRomaji } from "wanakana";  // ひらがなからローマ字に変換するライブラリ
 import axios from 'axios';  // HTTPリクエストライブラリ
 import styles from "./Keypad.module.css";
 
@@ -33,15 +34,16 @@ export default function Keypad({ onSubmit }) {
     const handleConvert = () => {
         const kana = toKatakana(input);  // 入力されたひらがなをカタカナに変換
         setConvertedText(kana);
-        fetchKanjiCandidates(kana);  // 変換したカタカナで漢字候補を取得
+        const romaji = toRomaji(input);  // ひらがなをローマ字に変換
+        fetchKanjiCandidates(romaji);  // ローマ字で漢字候補を取得
     };
 
     // 漢字候補を取得するAPI呼び出し
-    const fetchKanjiCandidates = async (hiragana) => {
-        if (!hiragana) return;
+    const fetchKanjiCandidates = async (romaji) => {
+        if (!romaji) return;
         setLoading(true);
         try {
-            const response = await axios.get(`https://jisho.org/api/v1/search/words?keyword=${hiragana}`);
+            const response = await axios.get(`https://jisho.org/api/v1/search/words?keyword=${romaji}`);
             const words = response.data.data;
             // 漢字候補のリストを作成
             const candidates = words.map((word) => word.japanese[0].reading);
