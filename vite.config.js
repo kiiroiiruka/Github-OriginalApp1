@@ -30,11 +30,6 @@ export default defineConfig({
           },
         ],
       },
-      workbox: {
-        // 必要に応じてキャッシュの設定を行います
-        skipWaiting: true,
-        clientsClaim: true,
-      },
     }),
   ],
   resolve: {

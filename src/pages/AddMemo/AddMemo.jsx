@@ -23,6 +23,14 @@ const AddMemo = () => {
         return /[一-龠ぁ-んァ-ンa-zA-Z0-9]/.test(cleaned);
     };
 
+    // ✅ 現在時刻より前の期限をチェックする関数
+    const isValidDeadline = (deadline) => {
+        if (!deadline) return true;  // 空の場合は無条件に有効
+        const deadlineDate = new Date(deadline);
+        const currentDate = new Date();
+        return deadlineDate >= currentDate;  // 現在時刻より前なら無効
+    };
+
     const handleSubmit = () => {
         const newMemo = {
             id: Date.now(),
@@ -95,6 +103,11 @@ const AddMemo = () => {
                     onChange={(e) => setDeadline(e.target.value)}
                     className={styles.dateInput}
                 />
+                {!isValidDeadline(deadline) && deadline && (
+                    <p className={styles.errorText}>
+                        締切日時は現在時刻より後の日時を設定してください。
+                    </p>
+                )}
             </div>
 
             {/* ✅ 追加ボタン */}
@@ -102,7 +115,7 @@ const AddMemo = () => {
                 <Button
                     label="追加する"
                     onClick={handleSubmit}
-                    disabled={!isValidTitle(title)}
+                    disabled={!isValidTitle(title) || !isValidDeadline(deadline)}  // 追加ボタンの無効化条件にdeadlineチェックも追加
                 />
             </div>
         </div>
