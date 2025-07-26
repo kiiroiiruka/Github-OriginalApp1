@@ -353,3 +353,126 @@
     font-size: 12px;
     color: #666;
 }
+
+.conversionButton {
+    padding: 8px 12px;
+    margin: 0 2px;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    min-width: 40px;
+}
+
+.conversionButton:hover {
+    background: #e0e0e0;
+}
+
+.conversionButton.selected {
+    background: #007AFF;
+    color: white;
+}
+
+.loadingText {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #666;
+    background: #f8f8f8;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.noMatch {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #999;
+    background: #f8f8f8;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex: 1;
+    text-align: center;
+}
+
+.candidateRow {
+    width: 100%;
+    min-height: 44px;
+    /* 固定の高さを設定 */
+    border-bottom: 1px solid #ddd;
+}
+
+.candidateContainer {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 4px;
+    padding: 4px 8px;
+    white-space: nowrap;
+    min-height: 36px;
+    align-items: center;
+
+    /* スクロールバーのスタイリング（Webkit系ブラウザ） */
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
+}
+
+.candidateContainer::-webkit-scrollbar {
+    height: 4px;
+}
+
+.candidateContainer::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.candidateContainer::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 2px;
+}
+
+.candidateContainer::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+
+.conversionButton {
+    padding: 6px 12px;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    min-width: 40px;
+    flex-shrink: 0;
+    /* ボタンが縮まないようにする */
+}
+
+.conversionButton:hover {
+    background: #e0e0e0;
+}
+
+.conversionButton.selected {
+    background: #007AFF;
+    color: white;
+}
+
+.loadingText {
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #666;
+    background: #f8f8f8;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.noMatch {
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #999;
+    background: #f8f8f8;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex: 1;
+    text-align: center;
+}

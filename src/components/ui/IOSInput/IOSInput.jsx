@@ -5,7 +5,7 @@ import axios from "axios";
 import styles from "./IOSInput.module.css";
 
 const isIOS = () =>
-    /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    true;
 
 export default function IOSInput({ value, onChange, as = "input", maxLength, placeholder = "ここをタップして入力" }) {
     const [showKeypad, setShowKeypad] = useState(false);
@@ -228,6 +228,55 @@ export default function IOSInput({ value, onChange, as = "input", maxLength, pla
                         </div>
                     ))}
 
+                    {/* 変換候補行（常に表示、横スクロール対応） */}
+                    <div className={styles.candidateRow}>
+                        <div className={styles.candidateContainer}>
+                            {composing ? (
+                                <>
+                                    {/* ひらがなボタン */}
+                                    {hiraganaText && (
+                                        <button
+                                            className={`${styles.conversionButton} ${selectedText === hiraganaText ? styles.selected : ''}`}
+                                            onClick={() => selectText(hiraganaText, 'hiragana')}
+                                        >
+                                            {hiraganaText}
+                                        </button>
+                                    )}
+
+                                    {/* カタカナボタン */}
+                                    {katakanaText && (
+                                        <button
+                                            className={`${styles.conversionButton} ${selectedText === katakanaText ? styles.selected : ''}`}
+                                            onClick={() => selectText(katakanaText, 'katakana')}
+                                        >
+                                            {katakanaText}
+                                        </button>
+                                    )}
+
+                                    {/* 漢字候補ボタン */}
+                                    {loading ? (
+                                        <div className={styles.loadingText}>読み込み中...</div>
+                                    ) : kanjiCandidates.length > 0 ? (
+                                        kanjiCandidates.map((candidate, i) => (
+                                            <button
+                                                key={i}
+                                                className={`${styles.conversionButton} ${selectedText === candidate.kanji ? styles.selected : ''}`}
+                                                onClick={() => selectKanjiCandidate(candidate)}
+                                                title={`${candidate.reading} - ${candidate.meanings}`}
+                                            >
+                                                {candidate.kanji}
+                                            </button>
+                                        ))
+                                    ) : hiraganaText && (
+                                        <div className={styles.noMatch}>一致無し</div>
+                                    )}
+                                </>
+                            ) : (
+                                <div className={styles.noMatch}>一致無し</div>
+                            )}
+                        </div>
+                    </div>
+
                     {/* 機能キー */}
                     <div className={styles.row}>
                         <button className={styles.funcKey} onClick={handleSpace}>スペース</button>
@@ -238,47 +287,6 @@ export default function IOSInput({ value, onChange, as = "input", maxLength, pla
                             {composing ? "確定" : "完了"}
                         </button>
                     </div>
-
-                    {/* 変換結果表示 */}
-                    {(hiraganaText || katakanaText) && (
-                        <div className={styles.display}>
-                            <div className={styles.conversionOptions}>
-                                <span
-                                    className={`${styles.option} ${selectedText === hiraganaText ? styles.selected : ''}`}
-                                    onClick={() => selectText(hiraganaText, 'hiragana')}
-                                >
-                                    ひらがな: {hiraganaText}
-                                </span>
-                                <span
-                                    className={`${styles.option} ${selectedText === katakanaText ? styles.selected : ''}`}
-                                    onClick={() => selectText(katakanaText, 'katakana')}
-                                >
-                                    カタカナ: {katakanaText}
-                                </span>
-                            </div>
-                        </div>
-                    )}
-
-                    {loading && <div className={styles.loading}>漢字候補を取得中...</div>}
-
-                    {!loading && kanjiCandidates.length > 0 && (
-                        <div className={styles.candidates}>
-                            <strong>漢字候補:</strong>
-                            <div className={styles.candidateList}>
-                                {kanjiCandidates.map((candidate, i) => (
-                                    <div
-                                        key={i}
-                                        className={`${styles.candidate} ${selectedText === candidate.kanji ? styles.selected : ''}`}
-                                        onClick={() => selectKanjiCandidate(candidate)}
-                                    >
-                                        <div className={styles.kanjiText}>{candidate.kanji}</div>
-                                        <div className={styles.readingText}>{candidate.reading}</div>
-                                        <div className={styles.meaningText}>{candidate.meanings}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
                 </div>
             )}
         </div>
