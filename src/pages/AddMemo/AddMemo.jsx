@@ -14,7 +14,6 @@ const AddMemo = () => {
     const [content, setContent] = useState('');
     const [deadline, setDeadline] = useState(''); // ← datetime-local 用
     const [currentTime, setCurrentTime] = useState(formatDateTime(new Date())); // 現在時刻を表示
-    const [isDeadlinePast, setIsDeadlinePast] = useState(false);  // 締切が過去かどうかの状態
 
     const addMemo = useMemoStore((state) => state.addMemo);
     const navigate = useNavigate();
@@ -45,15 +44,6 @@ const AddMemo = () => {
         return () => clearInterval(intervalId); // クリーンアップ
     }, []);
 
-    // 締切日時が過去かどうかをチェック
-    useEffect(() => {
-        if (deadline) {
-            const deadlineDate = new Date(deadline);
-            const now = new Date();
-            setIsDeadlinePast(deadlineDate < now);  // 現在時刻より締切が過去かどうか
-        }
-    }, [deadline]);
-
     return (
         <div className={styles.container}>
             <Header
@@ -73,7 +63,6 @@ const AddMemo = () => {
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    required
                     className={styles.input}
                 />
                 {!isValidTitle(title) && title.length > 0 && (
@@ -106,11 +95,6 @@ const AddMemo = () => {
                     onChange={(e) => setDeadline(e.target.value)}
                     className={styles.dateInput}
                 />
-                {isDeadlinePast && (
-                    <p className={styles.errorText}>
-                        締切は過去の日時を設定できません。
-                    </p>
-                )}
             </div>
 
             {/* ✅ 追加ボタン */}
@@ -118,7 +102,7 @@ const AddMemo = () => {
                 <Button
                     label="追加する"
                     onClick={handleSubmit}
-                    disabled={!isValidTitle(title) || isDeadlinePast} // 締切が過去の場合ボタンを無効化
+                    disabled={!isValidTitle(title)}
                 />
             </div>
         </div>
