@@ -10,8 +10,8 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'Memo App',
-        short_name: 'MemoApp',
+        name: "ミニメモ",
+        short_name: "ミニメモ",
         description: 'Memo Application',
         theme_color: '#ffffff',
         background_color: '#ffffff',
