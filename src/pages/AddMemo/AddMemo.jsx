@@ -5,7 +5,6 @@ import Button from "@/components/ui/Button/Button";
 import { formatDateTime } from "@/units/formatDate";
 import styles from "./AddMemo.module.css";
 import Header from "@/components/layout/Header/Header";
-import IOSInput from "@/components/ui/IOSInput/IOSInput";
 
 const AddMemo = () => {
     const location = useLocation();
@@ -46,7 +45,7 @@ const AddMemo = () => {
         }, 1000);
         return () => clearInterval(intervalId);
     }, []);
-    const [text, setText] = useState("");
+
     return (
         <div className={styles.container}>
             <Header title={`優先度: ${priority}`} onBack={() => navigate(-1)} />
@@ -54,26 +53,17 @@ const AddMemo = () => {
             <div className={styles.currentTime}>
                 <p>現在: {currentTime}</p>
             </div>
-            <input
-                type="text"
-                placeholder="ここに入力"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                style={{
-                    padding: "8px",
-                    fontSize: "16px",
-                    width: "100%",
-                    marginBottom: "20px",
-                }}
-            />
+
             {/* タイトル入力 */}
             <div className={styles.formGroup}>
                 <label className={styles.label}>タイトル（必須）:</label>
-                <IOSInput
+                <input
+                    type="text"
                     value={title}
-                    onChange={setTitle}
-                    as="input"          // ← ここを as に変更
+                    onChange={(e) => setTitle(e.target.value)}
                     maxLength={50}
+                    placeholder="タイトルを入力"
+                    className={styles.input}
                 />
                 {!isValidTitle(title) && title.length > 0 && (
                     <p className={styles.errorText}>
@@ -85,11 +75,12 @@ const AddMemo = () => {
             {/* 内容入力 */}
             <div className={styles.formGroup}>
                 <label className={styles.label}>内容（任意 ※最大100文字）</label>
-                <IOSInput
+                <textarea
                     value={content}
-                    onChange={setContent}
-                    as="textarea"      // ← textarea の場合も as を使用
+                    onChange={(e) => setContent(e.target.value)}
                     maxLength={100}
+                    placeholder="内容を入力"
+                    className={styles.input}
                 />
                 <p className={styles.remainingText}>
                     残り {100 - content.length} 文字
