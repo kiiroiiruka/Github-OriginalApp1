@@ -80,7 +80,7 @@ const AddMemo = () => {
                     onChange={(e) => setContent(e.target.value)}
                     maxLength={100}
                     placeholder="内容を入力"
-                    className={styles.input}
+                    className={styles.textarea}
                 />
                 <p className={styles.remainingText}>
                     残り {100 - content.length} 文字
