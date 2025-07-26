@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import useMemoStore from '@/store/useMemoStore';
 import Button from '@/components/ui/Button/Button';
@@ -15,11 +15,6 @@ const AddMemo = () => {
     const [deadline, setDeadline] = useState(''); // ← datetime-local 用
     const [currentTime, setCurrentTime] = useState(formatDateTime(new Date())); // 現在時刻を表示
     const [isDeadlinePast, setIsDeadlinePast] = useState(false);  // 締切が過去かどうかの状態
-
-    // useRefを使ってフォーム要素を参照
-    const titleRef = useRef(null);
-    const contentRef = useRef(null);
-    const deadlineRef = useRef(null);
 
     const addMemo = useMemoStore((state) => state.addMemo);
     const navigate = useNavigate();
@@ -59,13 +54,6 @@ const AddMemo = () => {
         }
     }, [deadline]);
 
-    // 入力欄にフォーカスを当てる関数
-    const focusInput = (inputRef) => {
-        if (inputRef && inputRef.current) {
-            inputRef.current.focus();
-        }
-    };
-
     return (
         <div className={styles.container}>
             <Header
@@ -87,11 +75,6 @@ const AddMemo = () => {
                     onChange={(e) => setTitle(e.target.value)}
                     required
                     className={styles.input}
-                    ref={titleRef}  // refを追加
-                />
-                <Button
-                    label="入力"
-                    onClick={() => focusInput(titleRef)}  // ボタンタップで入力欄にフォーカス
                 />
                 {!isValidTitle(title) && title.length > 0 && (
                     <p className={styles.errorText}>
@@ -108,11 +91,6 @@ const AddMemo = () => {
                     maxLength={100}
                     onChange={(e) => setContent(e.target.value)}
                     className={styles.textarea}
-                    ref={contentRef}  // refを追加
-                />
-                <Button
-                    label="入力"
-                    onClick={() => focusInput(contentRef)}  // ボタンタップで入力欄にフォーカス
                 />
                 <p className={styles.remainingText}>
                     残り {100 - content.length} 文字
@@ -127,11 +105,6 @@ const AddMemo = () => {
                     value={deadline}
                     onChange={(e) => setDeadline(e.target.value)}
                     className={styles.dateInput}
-                    ref={deadlineRef}  // refを追加
-                />
-                <Button
-                    label="入力"
-                    onClick={() => focusInput(deadlineRef)}  // ボタンタップで入力欄にフォーカス
                 />
                 {isDeadlinePast && (
                     <p className={styles.errorText}>
