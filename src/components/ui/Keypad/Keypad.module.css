@@ -1,38 +1,243 @@
+/* Keypad.module.css */
+
 .keypad {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
     padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .row {
     display: flex;
-    margin-bottom: 10px;
+    justify-content: center;
+    margin-bottom: 8px;
+    gap: 4px;
 }
 
 .key {
-    padding: 10px;
-    margin: 5px;
-    font-size: 18px;
+    min-width: 45px;
+    height: 45px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
-    border: none;
-    background-color: #f1f1f1;
+    transition: all 0.15s ease;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+.key:hover {
+    background-color: #e8f4fd;
+    border-color: #0066cc;
+    transform: translateY(-1px);
+}
+
+.key:active {
+    background-color: #d1e9f6;
+    transform: translateY(0);
 }
 
 .funcKey {
-    padding: 10px;
-    margin: 5px;
-    font-size: 18px;
+    min-width: 60px;
+    height: 45px;
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
-    background-color: #cce5ff;
+    transition: all 0.15s ease;
+    user-select: none;
+    touch-action: manipulation;
+    margin: 0 2px;
+}
+
+.funcKey:hover {
+    background-color: #0052a3;
+    transform: translateY(-1px);
+}
+
+.funcKey:active {
+    background-color: #004080;
+    transform: translateY(0);
 }
 
 .display {
-    margin-top: 20px;
-    text-align: left;
+    background-color: #ffffff;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
 }
 
-.display div {
+.display>div {
+    margin-bottom: 8px;
     font-size: 16px;
-    margin: 5px 0;
+}
+
+.display>div:last-child {
+    margin-bottom: 0;
+}
+
+.display strong {
+    display: inline-block;
+    width: 80px;
+    color: #333;
+}
+
+.display span {
+    color: #000;
+    font-size: 18px;
+}
+
+.clickable {
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: background-color 0.15s ease;
+}
+
+.clickable:hover {
+    background-color: #e8f4fd;
+}
+
+.selected {
+    background-color: #0066cc;
+    color: white;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.loading {
+    text-align: center;
+    padding: 16px;
+    color: #666;
+    font-style: italic;
+}
+
+.kanjiCandidates {
+    margin-top: 16px;
+}
+
+.kanjiCandidates strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 14px;
+}
+
+.candidateList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.candidate {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
+}
+
+.candidate:hover {
+    background-color: #e8f4fd;
+    border-color: #0066cc;
+    transform: translateY(-1px);
+}
+
+.candidate.selected {
+    background-color: #0066cc;
+    color: white;
+    border-color: #0066cc;
+}
+
+.kanjiText {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.readingText {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.candidate.selected .readingText {
+    color: #cce7ff;
+}
+
+.meaningText {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.3;
+}
+
+.candidate.selected .meaningText {
+    color: #e6f3ff;
+}
+
+.sourceText {
+    font-size: 10px;
+    color: #999;
+    font-style: italic;
+    margin-top: 2px;
+}
+
+.candidate.selected .sourceText {
+    color: #cce7ff;
+}
+
+/* スマートフォン対応 */
+@media (max-width: 768px) {
+    .keypad {
+        padding: 16px;
+    }
+
+    .key,
+    .funcKey {
+        min-width: 35px;
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .funcKey {
+        min-width: 50px;
+        font-size: 12px;
+    }
+
+    .display {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .display span {
+        font-size: 16px;
+    }
+
+    .candidateList {
+        grid-template-columns: 1fr;
+        max-height: 200px;
+    }
+
+    .candidate {
+        padding: 8px;
+    }
+
+    .kanjiText {
+        font-size: 18px;
+    }
 }

@@ -1,52 +1,74 @@
 // Keypad.jsx
 import React, { useState } from "react";
-import { toKatakana } from "wanakana";  // ひらがなカタカナ変換ライブラリ
-import { toRomaji } from "wanakana";  // ひらがなからローマ字に変換するライブラリ
+import { toHiragana, toKatakana } from "wanakana";  // ひらがなカタカナ変換ライブラリ
 import axios from 'axios';  // HTTPリクエストライブラリ
 import styles from "./Keypad.module.css";
 
-// ひらがなのキー配列
-const HIRAGANA_KEYS = [
-    ["あ", "い", "う", "え", "お"],
-    ["か", "き", "く", "け", "こ"],
-    ["さ", "し", "す", "せ", "そ"],
-    ["た", "ち", "つ", "て", "と"],
-    ["な", "に", "ぬ", "ね", "の"],
-    ["は", "ひ", "ふ", "へ", "ほ"],
-    ["ま", "み", "む", "め", "も"],
-    ["や", "ゆ", "よ"],
-    ["ら", "り", "る", "れ", "ろ"],
-    ["わ", "を", "ん"],
+// QWERTYキー配列
+const QWERTY_KEYS = [
+    ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+    ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
+    ["Z", "X", "C", "V", "B", "N", "M"],
 ];
 
-export default function Keypad({ onSubmit }) {
-    const [input, setInput] = useState("");  // ユーザーの入力
-    const [convertedText, setConvertedText] = useState("");  // 変換されたカタカナやひらがな
+export default function Keypad({ onSubmit, onInput, onDelete }) {
+    const [romajiInput, setRomajiInput] = useState("");  // ローマ字入力
+    const [hiraganaText, setHiraganaText] = useState("");  // ひらがな変換結果
+    const [katakanaText, setKatakanaText] = useState("");  // カタカナ変換結果
     const [kanjiCandidates, setKanjiCandidates] = useState([]);  // 漢字候補
     const [loading, setLoading] = useState(false);  // API呼び出しのローディング状態
+    const [selectedText, setSelectedText] = useState("");  // 選択されたテキスト
 
-    // 入力処理
+    // ローマ字入力処理
     const handleInput = (char) => {
-        setInput((prevInput) => prevInput + char);
+        const newRomaji = romajiInput + char.toLowerCase();
+        setRomajiInput(newRomaji);
+
+        // リアルタイムでひらがなに変換
+        const hiragana = toHiragana(newRomaji);
+        setHiraganaText(hiragana);
+
+        // カタカナにも変換
+        const katakana = toKatakana(hiragana);
+        setKatakanaText(katakana);
     };
 
-    // 変換処理: ひらがなをカタカナに変換
-    const handleConvert = () => {
-        const kana = toKatakana(input);  // 入力されたひらがなをカタカナに変換
-        setConvertedText(kana);
-        const romaji = toRomaji(input);  // ひらがなをローマ字に変換
-        fetchKanjiCandidates(romaji);  // ローマ字で漢字候補を取得
+    // 漢字変換処理
+    const handleKanjiConvert = () => {
+        if (hiraganaText) {
+            fetchKanjiCandidates(hiraganaText);
+        }
     };
 
+    // 漢字候補を取得するAPI呼び出し
     // 漢字候補を取得するAPI呼び出し
     const fetchKanjiCandidates = async (romaji) => {
         if (!romaji) return;
         setLoading(true);
         try {
-            const response = await axios.get(`https://jisho.org/api/v1/search/words?keyword=${romaji}`);
-            const words = response.data.data;
+            // Use AllOrigins proxy to bypass CORS issue
+            const proxyUrl = "https://api.allorigins.win/get?url=";
+            const apiUrl = `https://jisho.org/api/v1/search/words?keyword=${romaji}`;
+
+            const response = await axios.get(proxyUrl + encodeURIComponent(apiUrl));
+            const data = JSON.parse(response.data.contents);  // Parse the response data
+            const words = data.data;
+
             // 漢字候補のリストを作成
-            const candidates = words.map((word) => word.japanese[0].reading);
+            const candidates = words.flatMap((word) => {
+                if (word.japanese && word.japanese.length > 0) {
+                    return word.japanese.map((item) => ({
+                        kanji: item.word || item.reading,
+                        reading: item.reading,
+                        meanings: word.senses
+                            .map((s) => s.english_definitions.join(", "))
+                            .join("; "),
+                        source: "Jisho.org", // 追加
+                    }));
+                }
+                return [];
+            });
+
             setKanjiCandidates(candidates);
         } catch (error) {
             console.error("API error:", error);
@@ -55,23 +77,77 @@ export default function Keypad({ onSubmit }) {
         }
     };
 
+    // 漢字候補選択
+    const selectKanjiCandidate = (candidate) => {
+        setSelectedText(candidate.kanji);
+    };
+
+    // ひらがな選択
+    const selectHiragana = () => {
+        setSelectedText(hiraganaText);
+    };
+
+    // カタカナ選択
+    const selectKatakana = () => {
+        setSelectedText(katakanaText);
+    };
+
     // 削除処理
     const handleDelete = () => {
-        setInput((prevInput) => prevInput.slice(0, -1));  // 最後の1文字を削除
+        const newRomaji = romajiInput.slice(0, -1);
+        setRomajiInput(newRomaji);
+
+        if (newRomaji) {
+            const hiragana = toHiragana(newRomaji);
+            setHiraganaText(hiragana);
+            const katakana = toKatakana(hiragana);
+            setKatakanaText(katakana);
+        } else {
+            setHiraganaText("");
+            setKatakanaText("");
+            setKanjiCandidates([]);
+            setSelectedText("");
+        }
+    };
+
+    // スペース入力
+    const handleSpace = () => {
+        setRomajiInput(romajiInput + " ");
+        setHiraganaText(hiraganaText + " ");
+        setKatakanaText(katakanaText + " ");
     };
 
     // 完了処理: 送信
     const handleSubmit = () => {
-        onSubmit(convertedText || input);  // 変換したテキストまたはそのままのテキストを送信
-        setInput("");  // 入力をリセット
-        setConvertedText("");  // 変換テキストをリセット
-        setKanjiCandidates([]);  // 漢字候補をリセット
+        const finalText = selectedText || hiraganaText || romajiInput;
+
+        if (onInput) {
+            onInput(finalText); // ✅ AddMemoに送る
+        } else if (onSubmit) {
+            onSubmit(finalText);
+        }
+
+        // 全てリセット
+        setRomajiInput("");
+        setHiraganaText("");
+        setKatakanaText("");
+        setKanjiCandidates([]);
+        setSelectedText("");
+    };
+
+    // 全クリア
+    const handleClear = () => {
+        setRomajiInput("");
+        setHiraganaText("");
+        setKatakanaText("");
+        setKanjiCandidates([]);
+        setSelectedText("");
     };
 
     return (
         <div className={styles.keypad}>
-            {/* ひらがなキーパッド */}
-            {HIRAGANA_KEYS.map((row, i) => (
+            {/* QWERTYキーパッド */}
+            {QWERTY_KEYS.map((row, i) => (
                 <div key={i} className={styles.row}>
                     {row.map((char) => (
                         <button
@@ -86,22 +162,48 @@ export default function Keypad({ onSubmit }) {
                 </div>
             ))}
 
+            {/* 機能キー */}
             <div className={styles.row}>
-                <button className={styles.funcKey} onClick={handleDelete}>⌫</button>
-                <button className={styles.funcKey} onClick={handleConvert}>変換</button>
+                <button className={styles.funcKey} onClick={handleSpace}>スペース</button>
+                <button className={styles.funcKey} onClick={() => {
+                    handleDelete();
+                    if (onDelete) onDelete(); // ✅ 親のonDeleteも呼ぶ
+                }}>⌫</button>
+                <button className={styles.funcKey} onClick={handleClear}>クリア</button>
+                <button className={styles.funcKey} onClick={handleKanjiConvert}>漢字変換</button>
                 <button className={styles.funcKey} onClick={handleSubmit}>完了</button>
             </div>
 
             {/* 入力と変換結果の表示 */}
             <div className={styles.display}>
                 <div>
-                    <strong>入力: </strong>
-                    <span>{input}</span>
+                    <strong>ローマ字: </strong>
+                    <span>{romajiInput}</span>
                 </div>
                 <div>
-                    <strong>変換: </strong>
-                    <span>{convertedText}</span>
+                    <strong>ひらがな: </strong>
+                    <span
+                        className={selectedText === hiraganaText ? styles.selected : styles.clickable}
+                        onClick={selectHiragana}
+                    >
+                        {hiraganaText}
+                    </span>
                 </div>
+                <div>
+                    <strong>カタカナ: </strong>
+                    <span
+                        className={selectedText === katakanaText ? styles.selected : styles.clickable}
+                        onClick={selectKatakana}
+                    >
+                        {katakanaText}
+                    </span>
+                </div>
+                {selectedText && (
+                    <div>
+                        <strong>選択中: </strong>
+                        <span className={styles.selected}>{selectedText}</span>
+                    </div>
+                )}
             </div>
 
             {/* 漢字候補の表示 */}
@@ -109,15 +211,24 @@ export default function Keypad({ onSubmit }) {
                 <div className={styles.loading}>漢字候補を取得中...</div>
             ) : (
                 <div className={styles.kanjiCandidates}>
-                    <strong>漢字候補:</strong>
-                    {kanjiCandidates.length > 0 ? (
-                        <ul>
-                            {kanjiCandidates.map((candidate, idx) => (
-                                <li key={idx}>{candidate}</li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p>候補はありません。</p>
+                    {kanjiCandidates.length > 0 && (
+                        <>
+                            <strong>漢字候補:</strong>
+                            <div className={styles.candidateList}>
+                                {kanjiCandidates.slice(0, 10).map((candidate, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={`${styles.candidate} ${selectedText === candidate.kanji ? styles.selected : ''}`}
+                                        onClick={() => selectKanjiCandidate(candidate)}
+                                    >
+                                        <div className={styles.kanjiText}>{candidate.kanji}</div>
+                                        <div className={styles.readingText}>{candidate.reading}</div>
+                                        <div className={styles.meaningText}>{candidate.meanings}</div>
+                                        <div className={styles.sourceText}>{candidate.source}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </>
                     )}
                 </div>
             )}
