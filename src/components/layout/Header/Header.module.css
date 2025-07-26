@@ -1,6 +1,5 @@
 .header {
     position: fixed;
-    z-index: 1;
     /* あるいは fixed にすると常に画面上部に固定される */
     left: 0;
     top: 0;
