@@ -1,7 +1,9 @@
 // Keypad.jsx
-import React from "react";
+import React, { useState } from "react";
+import wanakana from "wanakana";
 import styles from "./Keypad.module.css";
 
+// ひらがなのキー配列
 const HIRAGANA_KEYS = [
     ["あ", "い", "う", "え", "お"],
     ["か", "き", "く", "け", "こ"],
@@ -15,16 +17,43 @@ const HIRAGANA_KEYS = [
     ["わ", "を", "ん"],
 ];
 
-export default function Keypad({ onInput, onDelete, onConvert, onSubmit }) {
+export default function Keypad({ onSubmit }) {
+    const [input, setInput] = useState("");  // ユーザーの入力
+    const [convertedText, setConvertedText] = useState("");  // 変換されたカタカナやひらがな
+
+    // 入力処理
+    const handleInput = (char) => {
+        setInput((prevInput) => prevInput + char);
+    };
+
+    // 変換処理: ひらがなをカタカナに変換
+    const handleConvert = () => {
+        const kana = wanakana.toKatakana(input);  // 入力されたひらがなをカタカナに変換
+        setConvertedText(kana);
+    };
+
+    // 削除処理
+    const handleDelete = () => {
+        setInput((prevInput) => prevInput.slice(0, -1));  // 最後の1文字を削除
+    };
+
+    // 完了処理: 送信
+    const handleSubmit = () => {
+        onSubmit(convertedText || input);  // 変換したテキストまたはそのままのテキストを送信
+        setInput("");  // 入力をリセット
+        setConvertedText("");  // 変換テキストをリセット
+    };
+
     return (
         <div className={styles.keypad}>
+            {/* ひらがなキーパッド */}
             {HIRAGANA_KEYS.map((row, i) => (
                 <div key={i} className={styles.row}>
                     {row.map((char) => (
                         <button
                             key={char}
                             className={styles.key}
-                            onClick={() => onInput(char)}
+                            onClick={() => handleInput(char)}
                         >
                             {char}
                         </button>
@@ -33,9 +62,21 @@ export default function Keypad({ onInput, onDelete, onConvert, onSubmit }) {
             ))}
 
             <div className={styles.row}>
-                <button className={styles.funcKey} onClick={onDelete}>⌫</button>
-                <button className={styles.funcKey} onClick={onConvert}>変換</button>
-                <button className={styles.funcKey} onClick={onSubmit}>完了</button>
+                <button className={styles.funcKey} onClick={handleDelete}>⌫</button>
+                <button className={styles.funcKey} onClick={handleConvert}>変換</button>
+                <button className={styles.funcKey} onClick={handleSubmit}>完了</button>
+            </div>
+
+            {/* 入力と変換結果の表示 */}
+            <div className={styles.display}>
+                <div>
+                    <strong>入力: </strong>
+                    <span>{input}</span>
+                </div>
+                <div>
+                    <strong>変換: </strong>
+                    <span>{convertedText}</span>
+                </div>
             </div>
         </div>
     );
