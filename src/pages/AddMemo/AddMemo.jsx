@@ -5,7 +5,7 @@ import Button from '@/components/ui/Button/Button';
 import { formatDateTime } from '@/units/formatDate';  // formatDateをインポート
 import styles from './AddMemo.module.css';
 import Header from '@/components/layout/Header/Header';
-
+import Keypad from '@/components/ui/Keypad/Keypad';
 const AddMemo = () => {
     const location = useLocation();
     const priority = location.state?.priority || '中';
@@ -51,7 +51,9 @@ const AddMemo = () => {
 
         return () => clearInterval(intervalId); // クリーンアップ
     }, []);
-
+    const isIOS = () => {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    };
     return (
         <div className={styles.container}>
             <Header
@@ -65,14 +67,25 @@ const AddMemo = () => {
             </div>
 
             {/* ✅ タイトル入力 */}
+            {/* ✅ タイトル入力 */}
             <div className={styles.formGroup}>
                 <label className={styles.label}>タイトル（必須）:</label>
+
                 <input
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     className={styles.input}
+                    readOnly={isIOS()} // iOS のときは入力不可
                 />
+
+                {isIOS() && (
+                    <Keypad
+                        onInput={(char) => setTitle((prev) => prev + char)}
+                        onDelete={() => setTitle((prev) => prev.slice(0, -1))}
+                    />
+                )}
+
                 {!isValidTitle(title) && title.length > 0 && (
                     <p className={styles.errorText}>
                         タイトルには少なくとも1文字の有効な文字（英数字・日本語）を入力してください。
@@ -80,15 +93,27 @@ const AddMemo = () => {
                 )}
             </div>
 
+
+            {/* ✅ 内容入力 */}
             {/* ✅ 内容入力 */}
             <div className={styles.formGroup}>
                 <label className={styles.label}>内容（最大100文字）:</label>
+
                 <textarea
                     value={content}
                     maxLength={100}
                     onChange={(e) => setContent(e.target.value)}
                     className={styles.textarea}
+                    readOnly={isIOS()} // iOS のときは Keypad 経由で入力
                 />
+
+                {isIOS() && (
+                    <Keypad
+                        onInput={(char) => setContent((prev) => prev + char)}
+                        onDelete={() => setContent((prev) => prev.slice(0, -1))}
+                    />
+                )}
+
                 <p className={styles.remainingText}>
                     残り {100 - content.length} 文字
                 </p>
