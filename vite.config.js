@@ -7,6 +7,7 @@ import path from 'path';
 export default defineConfig({
   plugins: [
     react(),
+    /*
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
@@ -30,7 +31,7 @@ export default defineConfig({
           },
         ],
       },
-    }),
+    }),*/
   ],
   resolve: {
     alias: {
