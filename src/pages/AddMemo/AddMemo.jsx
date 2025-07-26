@@ -73,7 +73,7 @@ const AddMemo = () => {
 
             {/* 内容入力 */}
             <div className={styles.formGroup}>
-                <label className={styles.label}>内容（最大100文字）:</label>
+                <label className={styles.label}>内容（任意 ※最大100文字）</label>
                 <IOSInput
                     value={content}
                     onChange={setContent}
@@ -87,7 +87,7 @@ const AddMemo = () => {
 
             {/* 締切入力 */}
             <div className={styles.formGroup}>
-                <label className={styles.label}>締切日時:</label>
+                <label className={styles.label}>締切日時（必須）:</label>
                 <input
                     type="datetime-local"
                     value={deadline}
@@ -105,7 +105,10 @@ const AddMemo = () => {
                 <Button
                     label="追加する"
                     onClick={handleSubmit}
-                    disabled={!isValidTitle(title) || !isValidDeadline(deadline)}
+                    disabled={
+                        !isValidTitle(title) ||
+                        !isValidDeadline(deadline) // ← 締切が必須になる
+                    }
                 />
             </div>
         </div>
