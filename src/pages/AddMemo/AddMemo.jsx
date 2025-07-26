@@ -57,13 +57,14 @@ const AddMemo = () => {
             </div>
 
             {/* ✅ タイトル入力 */}
+            {/* ✅ タイトル入力 */}
             <div className={styles.formGroup}>
                 <label className={styles.label}>タイトル（必須）:</label>
                 <input
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className={styles.input}
+                    className={`${styles.input} ${styles.inputIosFix}`}  // スタイルを追加
                 />
                 {!isValidTitle(title) && title.length > 0 && (
                     <p className={styles.errorText}>

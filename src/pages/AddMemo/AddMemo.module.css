@@ -82,3 +82,29 @@ body {
     text-align: center;
     /* 中央揃え */
 }
+
+/* iOS Safari 対策 */
+.inputIosFix {
+    -webkit-appearance: none;
+    /* iOS のデフォルメーション解除 */
+    -moz-appearance: none;
+    /* Firefox 対策 */
+    appearance: none;
+    /* 一般的なブラウザのデフォルメーション解除 */
+
+    /* iOSでの入力欄の高さや幅の不具合を防ぐ */
+    height: 40px;
+    padding: 8px 12px;
+
+    /* フォーカス時のボーダーや背景色の変更 */
+    outline: none;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.inputIosFix:focus {
+    border-color: #3b82f6;
+    /* フォーカス時に青い枠線 */
+    background-color: #f0f9ff;
+    /* フォーカス時の背景色 */
+}
