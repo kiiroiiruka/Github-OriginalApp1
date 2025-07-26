@@ -56,10 +56,6 @@ const AddMemo = () => {
 
     return (
         <div className={styles.container}>
-            <Header
-                title={`優先度: ${priority}`}
-                onBack={() => navigate(-1)}
-            />
 
             {/* ✅ 現在時刻表示 */}
             <div className={styles.currentTime}>
