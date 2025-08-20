@@ -115,6 +115,13 @@
 
 /* 時刻表示エリア */
 .dateContainer {
+    width: 100%;
+    /* 横幅いっぱい */
+    text-align: center;
+    /* 中央揃え */
+    margin-bottom: 16px;
+    /* 下に余白 */
     font-size: 24px;
-    justify-items: center;
+    font-weight: 500;
+    color: #333;
 }

@@ -61,7 +61,7 @@ const Deadline = () => {
 
             {/* 現在時刻の表示 */}
             <div className={styles.dateContainer}>
-                <p>現在: {formatDateTime(todayDate, true)}</p>
+                <p>現在:{formatDateTime(todayDate, true)}</p>
             </div>
             <div className={styles.body}>
                 <h4 className={styles.subTitle}>表示させる予定の優先度</h4>
