@@ -12,7 +12,7 @@ import Deadline from '@/pages/Deadline/Deadline';
 function App() {
   const location = useLocation();
   const { options, selected, handleSelect } = useFooterSelect(['memoHome', 'deadlineHome']);
-  const showFooterPaths = ['/', '/deadline'];
+  const showFooterPaths = ['/', '/memo', '/deadline'];
   const shouldShowFooter = showFooterPaths.includes(location.pathname);
 
   const labelMap = {
@@ -29,7 +29,8 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<MemoHome />} />
+        <Route path="/" element={<Deadline />} />
+        <Route path="/memo" element={<MemoHome />} />
         <Route path="/memoList" element={<MemoList />} />
         <Route path='/memoData' element={<MemoData />} />
         <Route path="/addMemo" element={<AddMemo />} />

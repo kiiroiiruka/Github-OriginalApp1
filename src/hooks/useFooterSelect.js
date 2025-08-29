@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function useFooterSelect(options) {
-    const [selected, setSelected] = useState(options[0]);
+    const [selected, setSelected] = useState(options[1]);
     const navigate = useNavigate();
 
     const handleSelect = (key) => {
@@ -11,9 +11,9 @@ function useFooterSelect(options) {
         setSelected(key);
 
         if (key === 'memoHome') {
-            navigate('/');
+            navigate('/memo');
         } else if (key === 'deadlineHome') {
-            navigate('/deadline');
+            navigate('/');
         }
     };
 
