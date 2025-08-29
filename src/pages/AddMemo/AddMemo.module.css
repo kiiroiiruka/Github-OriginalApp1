@@ -9,7 +9,7 @@ body {
 }
 
 .container {
-    margin-top: 4.0rem;
+    margin-top: 4rem;
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -46,6 +46,7 @@ body {
     font-size: 15px;
     transition: border-color 0.2s;
     box-sizing: border-box;
+    /* 幅のはみ出しを防ぐ */
 }
 
 .input:focus,
