@@ -9,7 +9,7 @@ body {
 }
 
 .container {
-    margin-top: 32px;
+    margin-top: 4.0rem;
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -69,10 +69,6 @@ body {
     font-size: 0.8em;
     color: #666;
     margin-top: 2px;
-}
-
-.buttonWrapper {
-    text-align: center;
 }
 
 .inputRow {

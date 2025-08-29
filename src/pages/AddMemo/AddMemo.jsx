@@ -118,15 +118,13 @@ const AddMemo = () => {
                         締切日時は現在時刻より後の日時を設定してください。
                     </p>
                 )}
-            </div>
 
-            <div className={styles.buttonWrapper}>
-                <Button
-                    label="追加する"
-                    onClick={handleSubmit}
-                    disabled={!isValidTitle(title) || !isValidDeadline(deadline)}
-                />
             </div>
+            <Button
+                label="追加する"
+                onClick={handleSubmit}
+                disabled={!isValidTitle(title) || !isValidDeadline(deadline)}
+            />
         </div>
     );
 };
