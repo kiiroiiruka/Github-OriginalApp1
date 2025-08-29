@@ -52,7 +52,7 @@ const MemoList = () => {
         <div className={styles.container}>
             <Header
                 title={`${level} 優先度のメモ`}
-                onBack={() => navigate("/")}
+                onBack={() => navigate("/memo")}
             />
 
             <div className={styles.buttonGroup}>
