@@ -37,4 +37,8 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    host: true,   // LAN上のスマホからアクセス可能にする
+    port: 5173,   // ポート指定（必要なら変更可能）
+  },
 });
