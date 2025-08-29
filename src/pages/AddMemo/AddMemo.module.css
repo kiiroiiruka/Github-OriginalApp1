@@ -9,16 +9,11 @@ body {
 }
 
 .container {
-    margin-top: 4.0rem;
-    padding: 25px;
+    margin-top: 32px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    /* 内容とボタンを上下に配置 */
-    min-height: 100vh;
-    /* 画面全体を最低限の高さに */
-    overflow-y: auto;
-    /* 必要に応じて縦方向にスクロール */
+    gap: 12px;
 }
 
 .title {
@@ -30,14 +25,14 @@ body {
 }
 
 .formGroup {
-    margin-bottom: 16px;
+    margin-bottom: 10px;
 }
 
 .label {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     color: #555;
 }
 
@@ -45,10 +40,10 @@ body {
 .textarea,
 .dateInput {
     width: 100%;
-    padding: 8px 10px;
+    padding: 6px 8px;
     border: 1px solid #ccc;
     border-radius: 6px;
-    font-size: 16px;
+    font-size: 15px;
     transition: border-color 0.2s;
 }
 
@@ -60,27 +55,24 @@ body {
 }
 
 .textarea {
-    height: 100px;
+    height: 80px;
     resize: none;
 }
 
 .errorText {
     color: red;
-    font-size: 0.9em;
-    margin-top: 4px;
+    font-size: 0.85em;
+    margin-top: 2px;
 }
 
 .remainingText {
-    font-size: 0.85em;
+    font-size: 0.8em;
     color: #666;
-    margin-top: 4px;
+    margin-top: 2px;
 }
 
 .buttonWrapper {
-
-    /* ボタンを下部に配置 */
     text-align: center;
-    /* 中央揃え */
 }
 
 .inputRow {
