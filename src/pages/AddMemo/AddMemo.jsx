@@ -12,7 +12,24 @@ const AddMemo = () => {
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const [deadline, setDeadline] = useState("");
+
+    // 締切日時の初期値を翌日の00:00に設定
+    const getDefaultDeadline = () => {
+        const d = new Date();
+        d.setDate(d.getDate() + 1); // 明日にする
+        d.setHours(0, 0, 0, 0);    // 時間を00:00にリセット
+
+        // ローカルタイムで YYYY-MM-DDTHH:MM に変換
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, "0");
+        const dd = String(d.getDate()).padStart(2, "0");
+        const hh = String(d.getHours()).padStart(2, "0");
+        const min = String(d.getMinutes()).padStart(2, "0");
+
+        return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+    };
+
+    const [deadline, setDeadline] = useState(getDefaultDeadline());
     const [currentTime, setCurrentTime] = useState(formatDateTime(new Date()));
 
     const addMemo = useMemoStore((state) => state.addMemo);
@@ -107,10 +124,7 @@ const AddMemo = () => {
                 <Button
                     label="追加する"
                     onClick={handleSubmit}
-                    disabled={
-                        !isValidTitle(title) ||
-                        !isValidDeadline(deadline) // ← 締切が必須になる
-                    }
+                    disabled={!isValidTitle(title) || !isValidDeadline(deadline)}
                 />
             </div>
         </div>
