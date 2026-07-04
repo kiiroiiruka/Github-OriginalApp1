@@ -5,46 +5,34 @@ import Button from "@/components/ui/Button/Button";
 import { formatDateTime } from "@/units/formatDate";
 import styles from "./AddMemo.module.css";
 import Header from "@/components/layout/Header/Header";
-
+import { getDefaultDeadline } from "@/units/getDefaultDeadline";
 const AddMemo = () => {
+    //遷移前に送った値を受け取る。
     const location = useLocation();
+    // 送られてきた優先度を取得。もし送られてこなかった場合は「中」をデフォルトにする。
     const priority = location.state?.priority || "中";
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const defaultDeadline = getDefaultDeadline();
+    const [deadline, setDeadline] = useState(defaultDeadline);//締め切り日時の状態を管理するためのuseStateフック。翌日の0時を初期値とする。
+    const [currentTime, setCurrentTime] = useState(formatDateTime(new Date()));// 現在時刻を表示するための状態
 
-    // 締切日時の初期値を翌日の00:00に設定
-    const getDefaultDeadline = () => {
-        const d = new Date();
-        d.setDate(d.getDate() + 1); // 明日にする
-        d.setHours(0, 0, 0, 0);    // 時間を00:00にリセット
-
-        // ローカルタイムで YYYY-MM-DDTHH:MM に変換
-        const yyyy = d.getFullYear();
-        const mm = String(d.getMonth() + 1).padStart(2, "0");
-        const dd = String(d.getDate()).padStart(2, "0");
-        const hh = String(d.getHours()).padStart(2, "0");
-        const min = String(d.getMinutes()).padStart(2, "0");
-
-        return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
-    };
-
-    const [deadline, setDeadline] = useState(getDefaultDeadline());
-    const [currentTime, setCurrentTime] = useState(formatDateTime(new Date()));
-
-    const addMemo = useMemoStore((state) => state.addMemo);
-    const navigate = useNavigate();
+    const addMemo = useMemoStore((state) => state.addMemo);// ZustandストアからaddMemo関数を取得
+    const navigate = useNavigate();// 画面遷移のためのフック
 
     const isValidTitle = (text) => {
         const cleaned = text.replace(/\s/g, "");
         return /[一-龠ぁ-んァ-ンa-zA-Z0-9]/.test(cleaned);
-    };
+    };// タイトルのバリデーション関数。空白を除去した後、英数字か日本語が含まれているかをチェックする。
 
+    // 締切日時が現在時刻より後であるかを検証する関数
     const isValidDeadline = (deadline) => {
         if (!deadline) return true;
         return new Date(deadline) >= new Date();
-    };
+    };// 締切日時が現在時刻より後であるかを検証する関数
 
+    // 送信ボタンがクリックされたときの処理
     const handleSubmit = () => {
         addMemo({
             id: Date.now(),
@@ -53,9 +41,10 @@ const AddMemo = () => {
             deadline,
             priority,
         });
-        navigate(-1);
+        navigate(-1);//前のページに戻る。
     };
 
+    // 現在時刻(ページに表示される方のやつ)を毎秒更新するためのuseEffectフック
     useEffect(() => {
         const intervalId = setInterval(() => {
             setCurrentTime(formatDateTime(new Date()));
@@ -121,11 +110,11 @@ const AddMemo = () => {
             </div>
 
 
-                <Button
-                    label="追加する"
-                    onClick={handleSubmit}
-                    disabled={!isValidTitle(title) || !isValidDeadline(deadline)}
-                />
+            <Button
+                label="追加する"
+                onClick={handleSubmit}
+                disabled={!isValidTitle(title) || !isValidDeadline(deadline)}
+            />
         </div>
     );
 };

@@ -11,7 +11,7 @@ import styles from './MemoHome.module.css'; // CSSモジュールのインポー
 const MemoHome = () => {
     const navigate = useNavigate();
     const [autoDelete, setAutoDelete] = useAtom(autoDeleteAtom); // 自動削除の状態を管理
-    // 自動削除処理の呼び出し
+    // ページ開くたびに自動削除処理の呼び出し
     useExpiredMemoDeleter();
 
     // メモリストの優先度を選択した場合の遷移処理

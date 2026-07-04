@@ -19,7 +19,7 @@ const Deadline = () => {
     const todayDate = useRealTimeClock(); // 毎秒更新される現在時刻
     const filteredMemos = useFilteredMemos(memos, selectedPriorities);
 
-    // 期限切れメモの定期削除処理を呼び出す
+    // ページ開くたびに期限切れメモの定期削除処理を呼び出す
     useExpiredMemoDeleter();
 
     const handleNavigate = (id) => {

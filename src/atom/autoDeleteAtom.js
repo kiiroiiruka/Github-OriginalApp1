@@ -1,5 +1,6 @@
-import { atom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
 
 // トグルボタンの状態を管理するためのatom
-export const autoDeleteAtom = atom(false); // 初期値はOFF
+// ローカルストレージに永続化して、ページ再読み込みやタブ間で状態を保持する
+export const autoDeleteAtom = atomWithStorage('autoDelete', false);
 

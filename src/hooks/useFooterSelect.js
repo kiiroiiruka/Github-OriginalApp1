@@ -1,19 +1,17 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';//ページ遷移ライブラリ
 
 function useFooterSelect(options) {
-    const [selected, setSelected] = useState(options[1]);
-    const navigate = useNavigate();
+    const [selected, setSelected] = useState(options[1]);//デフォルトは右側の方を選択
+    const navigate = useNavigate();//ページ遷移のためのフック
 
     const handleSelect = (key) => {
-        if (key === selected) return; // すでに選択されていれば何もしない
-
-        setSelected(key);
-
+        if (key === selected) return; // returnなのですでに選択されていれば何もしないで終了。
+        setSelected(key);//違う方を選択している場合は更新
         if (key === 'memoHome') {
-            navigate('/memo');
+            navigate('/memo');//memoに割り当てたページに遷移
         } else if (key === 'deadlineHome') {
-            navigate('/');
+            navigate('/');//締切に割り当てたページに遷移
         }
     };
 
