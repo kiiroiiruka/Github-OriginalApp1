@@ -9,6 +9,7 @@ import TabButtons from '@/components/ui/TabButtons/TabButtons';
 import useMemoStore from '@/store/useMemoStore';  // useMemoStore をインポート
 import AddMemo from '@/pages/AddMemo/AddMemo';
 import Deadline from '@/pages/Deadline/Deadline';
+import { trackScreenView } from '../firebase/client/analytics.js';
 function App() {
   const location = useLocation();
   const { options, selected, handleSelect } = useFooterSelect(['memoHome', 'deadlineHome']);
@@ -27,6 +28,11 @@ function App() {
     const loadMemos = useMemoStore.getState().loadMemos;  // useMemoStore から loadMemos を取得
     loadMemos();  // 初期化時にメモをロード(メモされている内容が画面に反映される。)
   }, []);
+
+  // ページパスが変わるたびに画面遷移をAnalyticsに記録
+  useEffect(() => {
+    trackScreenView(location.pathname);
+  }, [location.pathname]);
 
   return (
     <>
