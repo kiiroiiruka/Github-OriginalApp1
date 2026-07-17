@@ -11,13 +11,17 @@ const useMemoStore = create(
             // メモのロード
             loadMemos: () => {
                 try {
+                    //localStorageからmemo-storageというキーで保存されているデータを取得して、storedに代入。
                     const stored = JSON.parse(localStorage.getItem('memo-storage'));
                     if (stored?.state?.memos && Array.isArray(stored.state.memos)) {
+                        //メモ内容が保持されていたら、その内容をsetメソッドでmemosに代入。(画面に反映される。)
                         set({ memos: stored.state.memos });
                     } else {
+                        //メモ内容が保持されていなかったら、初期データをsetメソッドでmemosに代入。(画面に反映される。)
                         set({ memos: initialMemos });
                     }
                 } catch {
+                    //エラーが発生した場合、初期データをsetメソッドでmemosに代入。(画面に反映される。)
                     set({ memos: initialMemos });
                 }
             },

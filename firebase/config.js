@@ -1,9 +1,11 @@
 import { initializeApp } from 'firebase/app';//firebaseを使用するためのモジュールをインポート。
 import { getFirestore } from 'firebase/firestore';//firestoreを使用するためのモジュールをインポート。
 import { getStorage } from 'firebase/storage';//storageを使用するためのモジュールをインポート。
-
+import { getAuth } from 'firebase/auth';//authを使用するためのモジュールをインポート。
+import { getAnalytics } from 'firebase/analytics';//analyticsを使用するためのモジュールをインポート。
 //firebaseのAPIキーを.envファイルから取得してセットさせる。
 //デプロイ後はNetlifyにセットされた環境変数がセットされて動作する。
+
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
     authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -16,9 +18,11 @@ const firebaseConfig = {
 //以降でappを使用しfirebaseの操作を可能にするオブジェクトの作成をしている。
 const app = initializeApp(firebaseConfig);
 
-
 //firestoreオブジェクトを作成してdbに代入。呼び出してfirestoreを使用。
 export const db = getFirestore(app);
 //storageを使うためのオブジェクトを作成している。呼び出して画像データを保存できる。
 export const storage = getStorage(app);
-export default app;
+//auth(認証)を使うためのオブジェクトを作成してauthに代入。呼び出して認証機能を使用
+export const auth = getAuth(app);
+//analytics(ユーザーのアナリティクス(利用時の行動データ)の保持を可能にする)
+export const analytics = getAnalytics(app);

@@ -82,10 +82,12 @@ const Deadline = () => {
 
             {/* スクロール可能なラッパー */}
             <div className={styles.scrollContainer}>
+                {/*メモデータを表示させる為に全てのメモデータを取得してreturnで型変換した状態でVerticalListコンポーネントに渡す。*/}
                 <VerticalList
                     items={filteredMemos.map((memo) => {
+                        //memo野中から、そのメモデータの以下の三つの情報を取得
                         const { text, className, blink } = calculateRemainingTime(memo.deadline);
-
+                        //returnで型変化した値が引数の値としてVerticalListコンポーネントに渡される。
                         return {
                             id: memo.id,
                             label: (

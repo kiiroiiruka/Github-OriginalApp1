@@ -12,7 +12,9 @@ import Deadline from '@/pages/Deadline/Deadline';
 function App() {
   const location = useLocation();
   const { options, selected, handleSelect } = useFooterSelect(['memoHome', 'deadlineHome']);
+  //特定のページを開いているときだけフッターを表示させる為の管理パス
   const showFooterPaths = ['/', '/memo', '/deadline'];
+  //現在のアクセス先のページパスをlocation.pathnameで取得して、showFooterPathsに含まれているかをincludesメソッドで判定して、shouldShowFooterに代入。
   const shouldShowFooter = showFooterPaths.includes(location.pathname);
 
   const labelMap = {
@@ -23,11 +25,12 @@ function App() {
   // useEffect で loadMemos を実行
   useEffect(() => {
     const loadMemos = useMemoStore.getState().loadMemos;  // useMemoStore から loadMemos を取得
-    loadMemos();  // 初期化時にメモをロード
+    loadMemos();  // 初期化時にメモをロード(メモされている内容が画面に反映される。)
   }, []);
 
   return (
     <>
+     {/*ページのルーティングを設定*/}
       <Routes>
         <Route path="/" element={<Deadline />} />
         <Route path="/memo" element={<MemoHome />} />
@@ -37,6 +40,7 @@ function App() {
         <Route path="/deadline" element={<Deadline />} />
       </Routes>
 
+      {/*特定のページパスじゃない時はfooterは非表示にさせる。*/}
       {shouldShowFooter && (
         <Footer>
           <TabButtons
