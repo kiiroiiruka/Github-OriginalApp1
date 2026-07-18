@@ -28,17 +28,18 @@ const useMemoStore = create(
 
             // メモ追加
             addMemo: (memo) =>
+                //既存のmemosに新しいメモを追加して、setメソッドでmemosに代入。(画面に反映される。)
                 set((state) => ({
                     memos: [...state.memos, memo],
                 })),
 
-            // メモ削除
+            //既存のmemosから特定のメモを削除して、setメソッドでmemosに代入。(画面に反映される。)
             deleteMemo: (id) =>
                 set((state) => ({
                     memos: state.memos.filter((memo) => memo.id !== id),
                 })),
 
-            // メモ更新
+            // 既存のmemosから特定のメモを更新して、setメソッドでmemosに代入。(画面に反映される。)
             updateMemo: (updatedMemo) =>
                 set((state) => ({
                     memos: state.memos.map((memo) =>
