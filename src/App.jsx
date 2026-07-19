@@ -4,6 +4,7 @@ import Footer from "@/components/layout/Footer/Footer";
 import TabButtons from "@/components/ui/TabButtons/TabButtons";
 import { useAuth } from "@/context/auth/useAuth";
 import useFooterSelect from "@/hooks/useFooterSelect";
+import useMemoSync from "@/hooks/useMemoSync";
 import AddMemo from "@/pages/AddMemo/AddMemo";
 import Auth from "@/pages/Auth/Auth";
 import VerifyEmail from "@/pages/Auth/VerifyEmail";
@@ -29,14 +30,17 @@ function MainRoutes() {
     deadlineHome: "締切",
   };
 
-  useEffect(() => {
-    const loadMemos = useMemoStore.getState().loadMemos;
-    loadMemos();
-  }, []);
+  const memosLoading = useMemoStore((state) => state.loading);
+
+  useMemoSync();
 
   useEffect(() => {
     trackScreenView(location.pathname);
   }, [location.pathname]);
+
+  if (memosLoading) {
+    return <div className={styles.loading}>メモを読み込み中...</div>;
+  }
 
   return (
     <>

@@ -34,8 +34,8 @@ const AddMemo = () => {
   }; // 締切日時が現在時刻より後であるかを検証する関数
 
   // 送信ボタンがクリックされたときの処理
-  const handleSubmit = () => {
-    addMemo({
+  const handleSubmit = async () => {
+    await addMemo({
       id: Date.now(),
       title,
       content,

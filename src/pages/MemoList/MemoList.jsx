@@ -42,8 +42,8 @@ const MemoList = () => {
     }
   };
 
-  const handleDelete = () => {
-    selectedIds.forEach((id) => deleteMemo(id));
+  const handleDelete = async () => {
+    await Promise.all(selectedIds.map((id) => deleteMemo(id)));
     setSelectedIds([]);
     setIsSelecting(false);
   };

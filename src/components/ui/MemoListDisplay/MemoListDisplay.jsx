@@ -1,23 +1,14 @@
 // components/MemoListDisplay.jsx
-import { useEffect } from "react";
 import useMemoStore from "@/store/useMemoStore";
 
 const MemoListDisplay = () => {
-  const { memos, loadMemos } = useMemoStore((state) => ({
-    memos: state.memos,
-    loadMemos: state.loadMemos,
-  }));
-
-  // コンポーネントがマウントされたときにメモをロード
-  useEffect(() => {
-    loadMemos();
-  }, [loadMemos]);
+  const memos = useMemoStore((state) => state.memos);
 
   return (
     <div className="memo-list-container">
       {memos.length > 0 ? (
         memos.map((memo) => (
-          <div key={memo.title} className="memo-item">
+          <div key={memo.id} className="memo-item">
             <h3>{memo.title}</h3>
             <p>{memo.content}</p>
           </div>
