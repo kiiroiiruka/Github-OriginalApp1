@@ -22,7 +22,6 @@ function MainRoutes() {
   const location = useLocation();
   const { tabs, selected, handleSelect } = useFooterSelect(FOOTER_TABS);
   const shouldShowFooter = FOOTER_VISIBLE_PATHS.includes(location.pathname);
-
   const memosLoading = useMemoStore((state) => state.loading);
 
   useMemoSync();
