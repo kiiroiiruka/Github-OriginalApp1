@@ -1,0 +1,17 @@
+.link {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.875rem;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.linkCompact {
+    margin-top: 8px;
+}
+
+.link:hover {
+    text-decoration: underline;
+}

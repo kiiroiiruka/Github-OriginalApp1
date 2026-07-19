@@ -60,6 +60,20 @@
     margin-left: 8px;
 }
 
+.accountSection {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.accountEmail {
+    font-size: 0.875rem;
+    color: #888;
+}
+
 /* ボタンやリストアイテム */
 .listItem {
     font-size: 18px;

@@ -1,16 +1,20 @@
 import React from 'react';
 import Header from '@/components/layout/Header/Header';
 import VerticalList from '@/components/ui/VerticalList/VerticalList';
+import Button from '@/components/ui/Button/Button';
 import { useNavigate } from 'react-router-dom';
 import { useAtom } from 'jotai';
-import { autoDeleteAtom } from '@/atom/autoDeleteAtom'; // autoDeleteAtomをインポート
-import CustomCheckbox from '@/components/ui/CustomCheckbox/CustomCheckbox'; // チェックボックスコンポーネント
-import useExpiredMemoDeleter from '@/hooks/useExpiredMemoDeleter'; // 自動削除フック
-import styles from './MemoHome.module.css'; // CSSモジュールのインポート
+import { autoDeleteAtom } from '@/atom/autoDeleteAtom';
+import CustomCheckbox from '@/components/ui/CustomCheckbox/CustomCheckbox';
+import useExpiredMemoDeleter from '@/hooks/useExpiredMemoDeleter';
+import { useAuth } from '@/context/auth/useAuth';
+import { logout } from '../../../firebase/client/auth.js';
+import styles from './MemoHome.module.css';
 
 const MemoHome = () => {
     const navigate = useNavigate();
-    const [autoDelete, setAutoDelete] = useAtom(autoDeleteAtom); // 自動削除の状態を管理
+    const { user } = useAuth();
+    const [autoDelete, setAutoDelete] = useAtom(autoDeleteAtom);
     // ページ開くたびに自動削除処理の呼び出し
     useExpiredMemoDeleter();
 
@@ -21,7 +25,11 @@ const MemoHome = () => {
 
     // トグルボタンの状態を変更するハンドラ
     const handleToggle = (newState) => {
-        setAutoDelete(newState); // 自動削除の状態を反転
+        setAutoDelete(newState);
+    };
+
+    const handleLogout = async () => {
+        await logout();
     };
 
     const listItems = [
@@ -54,8 +62,12 @@ const MemoHome = () => {
                         </label>
                         <CustomCheckbox
                             checked={autoDelete}
-                            onChange={handleToggle} // 状態の反転
+                            onChange={handleToggle}
                         />
+                    </div>
+                    <div className={styles.accountSection}>
+                        <p className={styles.accountEmail}>{user?.email}</p>
+                        <Button label="ログアウト" onClick={handleLogout} />
                     </div>
                 </div>
             </main>

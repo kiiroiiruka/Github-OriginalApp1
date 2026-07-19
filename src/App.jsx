@@ -6,16 +6,19 @@ import MemoData from '@/pages/MemoData/MemoData';
 import Footer from '@/components/layout/Footer/Footer';
 import useFooterSelect from '@/hooks/useFooterSelect';
 import TabButtons from '@/components/ui/TabButtons/TabButtons';
-import useMemoStore from '@/store/useMemoStore';  // useMemoStore をインポート
+import useMemoStore from '@/store/useMemoStore';
 import AddMemo from '@/pages/AddMemo/AddMemo';
 import Deadline from '@/pages/Deadline/Deadline';
+import Auth from '@/pages/Auth/Auth';
+import VerifyEmail from '@/pages/Auth/VerifyEmail';
+import { useAuth } from '@/context/auth/useAuth';
 import { trackScreenView } from '../firebase/client/analytics.js';
-function App() {
+import styles from './App.module.css';
+
+function MainRoutes() {
   const location = useLocation();
   const { options, selected, handleSelect } = useFooterSelect(['memoHome', 'deadlineHome']);
-  //特定のページを開いているときだけフッターを表示させる為の管理パス
   const showFooterPaths = ['/', '/memo', '/deadline'];
-  //現在のアクセス先のページパスをlocation.pathnameで取得して、showFooterPathsに含まれているかをincludesメソッドで判定して、shouldShowFooterに代入。
   const shouldShowFooter = showFooterPaths.includes(location.pathname);
 
   const labelMap = {
@@ -23,20 +26,17 @@ function App() {
     deadlineHome: '締切',
   };
 
-  // useEffect で loadMemos を実行
   useEffect(() => {
-    const loadMemos = useMemoStore.getState().loadMemos;  // useMemoStore から loadMemos を取得
-    loadMemos();  // 初期化時にメモをロード(メモされている内容が画面に反映される。)
+    const loadMemos = useMemoStore.getState().loadMemos;
+    loadMemos();
   }, []);
 
-  // ページパスが変わるたびに画面遷移をAnalyticsに記録
   useEffect(() => {
     trackScreenView(location.pathname);
   }, [location.pathname]);
 
   return (
     <>
-     {/*ページのルーティングを設定*/}
       <Routes>
         <Route path="/" element={<Deadline />} />
         <Route path="/memo" element={<MemoHome />} />
@@ -46,7 +46,6 @@ function App() {
         <Route path="/deadline" element={<Deadline />} />
       </Routes>
 
-      {/*特定のページパスじゃない時はfooterは非表示にさせる。*/}
       {shouldShowFooter && (
         <Footer>
           <TabButtons
@@ -59,6 +58,30 @@ function App() {
       )}
     </>
   );
+}
+//ログイン状態に応じて表示させるページを切り替える
+function App() {
+  //ログイン状態を取得
+  const { user, loading, isEmailVerified } = useAuth();
+  //loading中は読み込み中を表示
+  if (loading) {
+    //App.module.cssのデザインをここでのみ使用
+    return <div className={styles.loading}>読み込み中...</div>;
+  }
+
+  //ログインしていない場合はログイン画面を表示
+  if (!user) {
+    //ログイン画面を表示
+    return <Auth />;
+  }
+
+  //メール認証していない場合はメール認証画面を表示
+  if (!isEmailVerified) {
+    //メール認証画面を表示
+    return <VerifyEmail />;
+  }
+  //ログインしていてメール認証している場合はメインルーティング(アプリ起動時の初期画面)を表示
+  return <MainRoutes />;
 }
 
 export default App;
