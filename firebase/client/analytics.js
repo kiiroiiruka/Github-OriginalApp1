@@ -1,4 +1,8 @@
-// ユーザーの利用状態を記録（Firebase Analytics）
+/**
+ * Firebase Analytics へのイベント送信。
+ * App.jsx の MainRoutes で trackScreenView を呼び、画面遷移を記録する。
+ * Firebase Console のアナリティクスに表示される（反映に時間がかかる場合あり）。
+ */
 import { getApp } from 'firebase/app';
 import { getAnalytics, isSupported, logEvent } from 'firebase/analytics';
 
