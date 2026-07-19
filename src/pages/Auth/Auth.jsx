@@ -10,7 +10,7 @@ import {
   login,
   registerWithVerification,
   getAuthErrorMessage,
-} from '@/firebase/client/auth.js';
+} from '../../../firebase/client/auth.js';
 
 /**
  * ログイン/登録画面の各ページの使いまわしコンポーネント。

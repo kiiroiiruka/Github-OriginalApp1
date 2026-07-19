@@ -10,7 +10,7 @@ import {
   resendVerificationEmail,
   logout,
   getAuthErrorMessage,
-} from '@/firebase/client/auth.js';
+} from '../../../firebase/client/auth.js';
 
 /**
  * App.jsx で useAuth() の値を見て、

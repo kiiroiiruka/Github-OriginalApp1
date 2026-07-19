@@ -3,7 +3,7 @@ import {
   subscribeAuth,
   reloadUser,
   completeEmailVerificationFromUrl,
-} from '@/firebase/client/auth.js';
+} from '../../../firebase/client/auth.js';
 //認証状態をグローバルに管理できるようにするためのContext API
 import { AuthContext } from './useAuth.js';
 
