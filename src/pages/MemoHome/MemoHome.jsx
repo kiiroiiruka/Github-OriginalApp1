@@ -8,6 +8,7 @@ import VerticalList from "@/components/ui/VerticalList/VerticalList";
 import { useAuth } from "@/context/auth/useAuth";
 import useExpiredMemoDeleter from "@/hooks/useExpiredMemoDeleter";
 import { logout } from "../../../firebase/client/auth.js";
+import { updateAutoDeleteSetting } from "../../../firebase/client/settings.js";
 import styles from "./MemoHome.module.css";
 
 const MemoHome = () => {
@@ -23,8 +24,16 @@ const MemoHome = () => {
   };
 
   // トグルボタンの状態を変更するハンドラ
-  const handleToggle = (newState) => {
+  const handleToggle = async (newState) => {
+    if (!user?.uid) return;
+
     setAutoDelete(newState);
+    try {
+      await updateAutoDeleteSetting(user.uid, newState);
+    } catch (error) {
+      console.error("設定の保存に失敗しました:", error);
+      setAutoDelete(!newState);
+    }
   };
 
   const handleLogout = async () => {

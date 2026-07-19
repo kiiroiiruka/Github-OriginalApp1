@@ -1,5 +1,4 @@
-import { atomWithStorage } from "jotai/utils";
+import { atom } from "jotai";
 
-// トグルボタンの状態を管理するためのatom
-// ローカルストレージに永続化して、ページ再読み込みやタブ間で状態を保持する
-export const autoDeleteAtom = atomWithStorage("autoDelete", false);
+// Firestore と useSettingsSync で同期する（デフォルト OFF）
+export const autoDeleteAtom = atom(false);

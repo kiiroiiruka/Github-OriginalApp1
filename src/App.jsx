@@ -5,6 +5,7 @@ import TabButtons from "@/components/ui/TabButtons/TabButtons";
 import { useAuth } from "@/context/auth/useAuth";
 import useFooterSelect from "@/hooks/useFooterSelect";
 import useMemoSync from "@/hooks/useMemoSync";
+import useSettingsSync from "@/hooks/useSettingsSync";
 import AddMemo from "@/pages/AddMemo/AddMemo";
 import Auth from "@/pages/Auth/Auth";
 import VerifyEmail from "@/pages/Auth/VerifyEmail";
@@ -33,6 +34,7 @@ function MainRoutes() {
   const memosLoading = useMemoStore((state) => state.loading);
 
   useMemoSync();
+  useSettingsSync();
 
   useEffect(() => {
     trackScreenView(location.pathname);
