@@ -1,16 +1,16 @@
-import styles from "./TabButtons.module.css"; //モジュールCSSでスタイル管理
+import styles from "./TabButtons.module.css";
 
-const TabButtons = ({ options, selected, onSelect, labelMap = {} }) => {
-  //引数から受け取ったオプションデータをmapメソッドで一つずつ取り出して、button要素を作成して表示させる。
+const TabButtons = ({ tabs, selected, onSelect }) => {
   return (
     <div className={styles.container}>
-      {options.map((option) => (
+      {tabs.map((tab) => (
         <button
-          key={option}
-          className={`${styles.button} ${selected === option ? styles.active : ""}`}
-          onClick={() => onSelect(option)}
+          key={tab.id}
+          type="button"
+          className={`${styles.button} ${selected === tab.id ? styles.active : ""}`}
+          onClick={() => onSelect(tab.id)}
         >
-          {labelMap[option] || option}
+          {tab.label}
         </button>
       ))}
     </div>

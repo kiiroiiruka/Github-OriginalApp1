@@ -1,7 +1,8 @@
-import { useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Footer from "@/components/layout/Footer/Footer";
 import TabButtons from "@/components/ui/TabButtons/TabButtons";
+import { FOOTER_TABS, FOOTER_VISIBLE_PATHS } from "@/constants/footerTabs";
 import { useAuth } from "@/context/auth/useAuth";
 import useFooterSelect from "@/hooks/useFooterSelect";
 import useMemoSync from "@/hooks/useMemoSync";
@@ -19,17 +20,8 @@ import MemoList from "./pages/MemoList/MemoList";
 
 function MainRoutes() {
   const location = useLocation();
-  const { options, selected, handleSelect } = useFooterSelect([
-    "memoHome",
-    "deadlineHome",
-  ]);
-  const showFooterPaths = ["/", "/memo", "/deadline"];
-  const shouldShowFooter = showFooterPaths.includes(location.pathname);
-
-  const labelMap = {
-    memoHome: "メモ",
-    deadlineHome: "締切",
-  };
+  const { tabs, selected, handleSelect } = useFooterSelect(FOOTER_TABS);
+  const shouldShowFooter = FOOTER_VISIBLE_PATHS.includes(location.pathname);
 
   const memosLoading = useMemoStore((state) => state.loading);
 
@@ -52,17 +44,12 @@ function MainRoutes() {
         <Route path="/memoList" element={<MemoList />} />
         <Route path="/memoData" element={<MemoData />} />
         <Route path="/addMemo" element={<AddMemo />} />
-        <Route path="/deadline" element={<Deadline />} />
+        <Route path="/deadline" element={<Navigate to="/" replace />} />
       </Routes>
 
       {shouldShowFooter && (
         <Footer>
-          <TabButtons
-            options={options}
-            selected={selected}
-            onSelect={handleSelect}
-            labelMap={labelMap}
-          />
+          <TabButtons tabs={tabs} selected={selected} onSelect={handleSelect} />
         </Footer>
       )}
     </>
@@ -70,8 +57,19 @@ function MainRoutes() {
 }
 //ログイン状態に応じて表示させるページを切り替える
 function App() {
+  const shouldRedirectHome = useRef(false);
   //ログイン状態を取得
   const { user, loading, isEmailVerified } = useAuth();
+
+  //ログイン状態の確認
+  useEffect(() => {
+    if (loading) return;
+
+    if (!user || !isEmailVerified) {
+      shouldRedirectHome.current = true;
+    }
+  }, [user, loading, isEmailVerified]);
+
   //loading中は読み込み中を表示
   if (loading) {
     //App.module.cssのデザインをここでのみ使用
@@ -89,7 +87,13 @@ function App() {
     //メール認証画面を表示
     return <VerifyEmail />;
   }
-  //ログインしていてメール認証している場合はメインルーティング(アプリ起動時の初期画面)を表示
+  // 認証フローを通った直後だけ、締切画面（/）へリダイレクトする
+  if (shouldRedirectHome.current) {
+    shouldRedirectHome.current = false;
+    return <Navigate to="/" replace />;
+  }
+
+  //アプリの各ページ内容を表示させる
   return <MainRoutes />;
 }
 
