@@ -17,7 +17,7 @@ const useSettingsSync = () => {
 
     const unsubscribe = subscribeSettings(
       user.uid,
-      (settings) => setAutoDelete(settings.autoDelete),
+      (settings) => setAutoDelete(Boolean(settings.autoDelete)),
       (error) => {
         console.error("設定の取得に失敗しました:", error);
         setAutoDelete(false);

@@ -31,13 +31,11 @@
   align-items: center;
   font-size: 18px;
   color: white;
-  /* Make sure the checkmark is white when checked */
+  opacity: 0;
 }
 
-/* Style for the green checkmark when unchecked */
-.checkboxContainer:not(.checked) .checkedInner {
-  color: #4caf50;
-  /* Green checkmark */
+.checkboxContainer.checked .checkedInner {
+  opacity: 1;
 }
 
 /* Make sure checkbox and text align properly */

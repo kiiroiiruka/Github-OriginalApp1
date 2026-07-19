@@ -1,4 +1,5 @@
 import { useAtom } from "jotai";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { autoDeleteAtom } from "@/atom/autoDeleteAtom";
 import Header from "@/components/layout/Header/Header";
@@ -8,15 +9,28 @@ import VerticalList from "@/components/ui/VerticalList/VerticalList";
 import { useAuth } from "@/context/auth/useAuth";
 import useExpiredMemoDeleter from "@/hooks/useExpiredMemoDeleter";
 import { logout } from "../../../firebase/client/auth.js";
-import { updateAutoDeleteSetting } from "../../../firebase/client/settings.js";
+import {
+  subscribeSettings,
+  updateAutoDeleteSetting,
+} from "../../../firebase/client/settings.js";
 import styles from "./MemoHome.module.css";
 
 const MemoHome = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [autoDelete, setAutoDelete] = useAtom(autoDeleteAtom);
+  const [savingSettings, setSavingSettings] = useState(false);
   // ページ開くたびに自動削除処理の呼び出し
   useExpiredMemoDeleter();
+
+  // メモ画面表示中も onSnapshot で他端末の変更を即反映する
+  useEffect(() => {
+    if (!user?.uid) return;
+
+    return subscribeSettings(user.uid, (settings) => {
+      setAutoDelete(Boolean(settings.autoDelete));
+    });
+  }, [user?.uid, setAutoDelete]);
 
   // メモリストの優先度を選択した場合の遷移処理
   const handleNavigate = (level) => {
@@ -25,14 +39,16 @@ const MemoHome = () => {
 
   // トグルボタンの状態を変更するハンドラ
   const handleToggle = async (newState) => {
-    if (!user?.uid) return;
+    if (!user?.uid || savingSettings) return;
 
-    setAutoDelete(newState);
+    setSavingSettings(true);
     try {
+      // UI は onSnapshot の反映に任せる（端末間で状態がずれない）
       await updateAutoDeleteSetting(user.uid, newState);
     } catch (error) {
       console.error("設定の保存に失敗しました:", error);
-      setAutoDelete(!newState);
+    } finally {
+      setSavingSettings(false);
     }
   };
 
