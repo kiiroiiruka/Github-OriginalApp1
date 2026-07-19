@@ -89,7 +89,7 @@ const VerifyEmail = () => {
       const verified = await checkVerification();
       if (!verified) {
         setError(
-          "まだメール認証が完了していません。メール内のリンクをクリックしてください。",
+          "まだメール認証が完了していません。メール内のリンクをクリックしてください。届いていない場合は迷惑メールフォルダもご確認ください。",
         );
       }
     } catch (err) {
@@ -118,6 +118,11 @@ const VerifyEmail = () => {
           </>
         }
       />
+
+      <AuthFeedback type="hint">
+        メールが届かない場合は、迷惑メールフォルダもご確認ください。
+        送信元は Firebase（noreply@*.firebaseapp.com）です。
+      </AuthFeedback>
 
       <AuthFeedback type="success">{message}</AuthFeedback>
       <AuthFeedback type="error">{error}</AuthFeedback>
