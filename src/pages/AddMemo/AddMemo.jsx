@@ -36,7 +36,6 @@ const AddMemo = () => {
   // 送信ボタンがクリックされたときの処理
   const handleSubmit = async () => {
     await addMemo({
-      id: Date.now(),
       title,
       content,
       deadline,

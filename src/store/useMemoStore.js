@@ -2,7 +2,6 @@ import { create } from "zustand";
 import {
   addMemoToFirestore,
   deleteMemoFromFirestore,
-  migrateLocalMemosToFirestore,
   subscribeMemos,
   updateMemoInFirestore,
 } from "../../firebase/client/memos.js";
@@ -18,8 +17,6 @@ const useMemoStore = create((set, get) => ({
     if (unsubscribe) unsubscribe();
 
     set({ userId: uid, loading: true, memos: [] });
-
-    await migrateLocalMemosToFirestore(uid);
 
     const unsub = subscribeMemos(
       uid,
