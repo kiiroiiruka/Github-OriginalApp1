@@ -2,101 +2,101 @@
 
 html,
 body {
-    height: 100%;
-    margin: 0;
-    overflow-x: hidden;
-    /* 横スクロールを防ぐ */
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  /* 横スクロールを防ぐ */
 }
 
 .container {
-    margin-top: 4rem;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    overflow-x: hidden;
+  margin-top: 4rem;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-x: hidden;
 }
 
 .title {
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
 }
 
 .formGroup {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .label {
-    font-size: 15px;
-    font-weight: 500;
-    display: block;
-    margin-bottom: 4px;
-    color: #555;
+  font-size: 15px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 4px;
+  color: #555;
 }
 
 .input,
 .textarea,
 .dateInput {
-    width: 100%;
-    padding: 6px 8px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 15px;
-    transition: border-color 0.2s;
-    box-sizing: border-box;
-    /* 幅のはみ出しを防ぐ */
-    max-width: 100%;
-    display: block;
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  /* 幅のはみ出しを防ぐ */
+  max-width: 100%;
+  display: block;
 }
 
 .input:focus,
 .textarea:focus,
 .dateInput:focus {
-    border-color: #3b82f6;
-    outline: none;
+  border-color: #3b82f6;
+  outline: none;
 }
 
 .textarea {
-    height: 80px;
-    resize: none;
+  height: 80px;
+  resize: none;
 }
 
 .dateInput {
-    -webkit-appearance: none;
-    appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .errorText {
-    color: red;
-    font-size: 0.85em;
-    margin-top: 2px;
+  color: red;
+  font-size: 0.85em;
+  margin-top: 2px;
 }
 
 .remainingText {
-    font-size: 0.8em;
-    color: #666;
-    margin-top: 2px;
+  font-size: 0.8em;
+  color: #666;
+  margin-top: 2px;
 }
 
 .inputRow {
-    display: flex;
-    gap: 8px;
-    align-items: center;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .focusButton {
-    padding: 6px 10px;
-    background-color: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
+  padding: 6px 10px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
 .focusButton:active {
-    opacity: 0.8;
+  opacity: 0.8;
 }

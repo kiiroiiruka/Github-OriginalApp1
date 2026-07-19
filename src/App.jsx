@@ -1,29 +1,32 @@
-import React, { useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import MemoHome from '@/pages/MemoHome/MemoHome';
-import MemoList from './pages/MemoList/MemoList';
-import MemoData from '@/pages/MemoData/MemoData';
-import Footer from '@/components/layout/Footer/Footer';
-import useFooterSelect from '@/hooks/useFooterSelect';
-import TabButtons from '@/components/ui/TabButtons/TabButtons';
-import useMemoStore from '@/store/useMemoStore';
-import AddMemo from '@/pages/AddMemo/AddMemo';
-import Deadline from '@/pages/Deadline/Deadline';
-import Auth from '@/pages/Auth/Auth';
-import VerifyEmail from '@/pages/Auth/VerifyEmail';
-import { useAuth } from '@/context/auth/useAuth';
-import { trackScreenView } from '../firebase/client/analytics.js';
-import styles from './App.module.css';
+import { useEffect } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import Footer from "@/components/layout/Footer/Footer";
+import TabButtons from "@/components/ui/TabButtons/TabButtons";
+import { useAuth } from "@/context/auth/useAuth";
+import useFooterSelect from "@/hooks/useFooterSelect";
+import AddMemo from "@/pages/AddMemo/AddMemo";
+import Auth from "@/pages/Auth/Auth";
+import VerifyEmail from "@/pages/Auth/VerifyEmail";
+import Deadline from "@/pages/Deadline/Deadline";
+import MemoData from "@/pages/MemoData/MemoData";
+import MemoHome from "@/pages/MemoHome/MemoHome";
+import useMemoStore from "@/store/useMemoStore";
+import { trackScreenView } from "../firebase/client/analytics.js";
+import styles from "./App.module.css";
+import MemoList from "./pages/MemoList/MemoList";
 
 function MainRoutes() {
   const location = useLocation();
-  const { options, selected, handleSelect } = useFooterSelect(['memoHome', 'deadlineHome']);
-  const showFooterPaths = ['/', '/memo', '/deadline'];
+  const { options, selected, handleSelect } = useFooterSelect([
+    "memoHome",
+    "deadlineHome",
+  ]);
+  const showFooterPaths = ["/", "/memo", "/deadline"];
   const shouldShowFooter = showFooterPaths.includes(location.pathname);
 
   const labelMap = {
-    memoHome: 'メモ',
-    deadlineHome: '締切',
+    memoHome: "メモ",
+    deadlineHome: "締切",
   };
 
   useEffect(() => {
@@ -41,7 +44,7 @@ function MainRoutes() {
         <Route path="/" element={<Deadline />} />
         <Route path="/memo" element={<MemoHome />} />
         <Route path="/memoList" element={<MemoList />} />
-        <Route path='/memoData' element={<MemoData />} />
+        <Route path="/memoData" element={<MemoData />} />
         <Route path="/addMemo" element={<AddMemo />} />
         <Route path="/deadline" element={<Deadline />} />
       </Routes>

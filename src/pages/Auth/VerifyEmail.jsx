@@ -1,25 +1,25 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import AuthLayout from '@/components/layout/auth/AuthLayout/AuthLayout';
-import AuthHeader from '@/components/layout/auth/AuthHeader/AuthHeader';
-import AuthSubmitButton from '@/components/ui/auth/AuthSubmitButton/AuthSubmitButton';
-import AuthTextLink from '@/components/ui/auth/AuthTextLink/AuthTextLink';
-import AuthFeedback from '@/components/ui/auth/AuthFeedback/AuthFeedback';
-import AuthActions from '@/components/ui/auth/AuthActions/AuthActions';
-import { useAuth } from '@/context/auth/useAuth';
+import { useCallback, useEffect, useState } from "react";
+import AuthHeader from "@/components/layout/auth/AuthHeader/AuthHeader";
+import AuthLayout from "@/components/layout/auth/AuthLayout/AuthLayout";
+import AuthActions from "@/components/ui/auth/AuthActions/AuthActions";
+import AuthFeedback from "@/components/ui/auth/AuthFeedback/AuthFeedback";
+import AuthSubmitButton from "@/components/ui/auth/AuthSubmitButton/AuthSubmitButton";
+import AuthTextLink from "@/components/ui/auth/AuthTextLink/AuthTextLink";
+import { useAuth } from "@/context/auth/useAuth";
 import {
-  resendVerificationEmail,
-  logout,
   getAuthErrorMessage,
-} from '../../../firebase/client/auth.js';
+  logout,
+  resendVerificationEmail,
+} from "../../../firebase/client/auth.js";
 
 /**
  * App.jsx で useAuth() の値を見て、
  * ログイン済みかつメール認証済みのときにこの画面を表示する。
-*/
+ */
 const VerifyEmail = () => {
   const { user, refreshUser } = useAuth();
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   /*
@@ -38,26 +38,24 @@ const VerifyEmail = () => {
   }, [refreshUser]);
 
   useEffect(() => {
-    checkVerification();//メール認証状態を確認する(初回3秒前に実行)
+    checkVerification(); //メール認証状態を確認する(初回3秒前に実行)
 
     //3秒ごとにメール認証状態を確認する(初回3秒後に定期的に実行)
     const interval = setInterval(checkVerification, 3000);
-    
-    
+
     /*
       そのブラウザのタブ（またはウィンドウ）がアクティブ
       になった瞬間にメール認証状態を確認する。
     */
     const onFocus = () => checkVerification();
-    window.addEventListener('focus', onFocus);
-
+    window.addEventListener("focus", onFocus);
 
     /*
       returnでページ移動時に定期的に実行している関数を削除する。
     */
     return () => {
       clearInterval(interval);
-      window.removeEventListener('focus', onFocus);
+      window.removeEventListener("focus", onFocus);
     };
   }, [checkVerification]);
 
@@ -65,13 +63,13 @@ const VerifyEmail = () => {
     確認メールを再送する関数
   */
   const handleResend = async () => {
-    setMessage('');
-    setError('');
+    setMessage("");
+    setError("");
     setSubmitting(true);
 
     try {
       await resendVerificationEmail();
-      setMessage('確認メールを再送しました。');
+      setMessage("確認メールを再送しました。");
     } catch (err) {
       setError(getAuthErrorMessage(err));
     } finally {
@@ -83,14 +81,16 @@ const VerifyEmail = () => {
     メール認証状態を確認する関数
   */
   const handleCheckVerification = async () => {
-    setMessage('');
-    setError('');
+    setMessage("");
+    setError("");
     setSubmitting(true);
 
     try {
       const verified = await checkVerification();
       if (!verified) {
-        setError('まだメール認証が完了していません。メール内のリンクをクリックしてください。');
+        setError(
+          "まだメール認証が完了していません。メール内のリンクをクリックしてください。",
+        );
       }
     } catch (err) {
       setError(getAuthErrorMessage(err));

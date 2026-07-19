@@ -1,19 +1,19 @@
 .feedback {
-    font-size: 0.875rem;
-    margin-bottom: 12px;
+  font-size: 0.875rem;
+  margin-bottom: 12px;
 }
 
 .error {
-    color: #dc2626;
+  color: #dc2626;
 }
 
 .success {
-    color: #16a34a;
+  color: #16a34a;
 }
 
 .hint {
-    font-size: 0.8rem;
-    color: #888;
-    line-height: 1.5;
-    margin-bottom: 0;
+  font-size: 0.8rem;
+  color: #888;
+  line-height: 1.5;
+  margin-bottom: 0;
 }

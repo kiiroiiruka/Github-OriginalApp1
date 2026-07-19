@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from "react";
 import {
-  subscribeAuth,
-  reloadUser,
   completeEmailVerificationFromUrl,
-} from '../../../firebase/client/auth.js';
+  reloadUser,
+  subscribeAuth,
+} from "../../../firebase/client/auth.js";
 //認証状態をグローバルに管理できるようにするためのContext API
-import { AuthContext } from './useAuth.js';
+import { AuthContext } from "./useAuth.js";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     //アンマウントでComponentの実行状態を削除するためにreturnでセットする。
     return unsubscribe;
   }, []);
-  
+
   /*
     useCallbackで宣言した関数は、宣言した時点で一度実行される。(ログイン状態を取得する)
     宣言だけをメモリ効率化させて、普通に外部から利用可能な関数を作成。
@@ -36,9 +36,9 @@ export const AuthProvider = ({ children }) => {
     呼び出す際のコード例:「await refreshUser();」
   */
   const refreshUser = useCallback(async () => {
-    const updated = await reloadUser();//最新のユーザ情報を引っ張ってきてくる関数
-    setUser(updated);//最新のユーザ情報をセット
-    return updated;//最新のユーザ情報を返す
+    const updated = await reloadUser(); //最新のユーザ情報を引っ張ってきてくる関数
+    setUser(updated); //最新のユーザ情報をセット
+    return updated; //最新のユーザ情報を返す
   }, []);
 
   /*
@@ -57,9 +57,5 @@ export const AuthProvider = ({ children }) => {
   };
 
   //returnでラッパーで包んだコンポーネント内で上記valueの値を利用できるようになる。
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
