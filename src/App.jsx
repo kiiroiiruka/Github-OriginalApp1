@@ -9,7 +9,7 @@ import useMemoSync from "@/hooks/useMemoSync";
 import useSettingsSync from "@/hooks/useSettingsSync";
 import AddMemo from "@/pages/AddMemo/AddMemo";
 import Auth from "@/pages/Auth/Auth";
-import CompleteRegistration from "@/pages/Auth/CompleteRegistration";
+import CompleteRegistraation from "@/pages/Auth/CompleteRegistration";
 import PendingRegistration from "@/pages/Auth/PendingRegistration";
 import VerifyEmail from "@/pages/Auth/VerifyEmail";
 import Deadline from "@/pages/Deadline/Deadline";
@@ -87,7 +87,10 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/complete-registration" element={<CompleteRegistration />} />
+      <Route
+        path="/complete-registration"
+        element={<CompleteRegistraation />}
+      />
       <Route
         path="*"
         element={
