@@ -1,0 +1,42 @@
+.page {
+  min-height: 100vh;
+  background-color: #f9fafc;
+}
+
+.container {
+  padding: 76px 16px 24px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.description {
+  margin: 0 0 20px;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.textareaLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+}

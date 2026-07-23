@@ -3,16 +3,16 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   reload,
-  sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
+import { sendVerificationEmail } from "../../src/api/sendVerificationEmail.js";
 import { auth } from "../config.js";
 
-const getEmailActionCodeSettings = () => ({
-  url: window.location.origin,
-  handleCodeInApp: true,
-});
+const sendCustomVerificationEmail = async (user) => {
+  const idToken = await user.getIdToken();
+  await sendVerificationEmail(idToken);
+};
 
 // ログイン
 export const login = (email, password) =>
@@ -25,7 +25,7 @@ export const registerWithVerification = async (email, password) => {
     email,
     password,
   );
-  await sendEmailVerification(credential.user, getEmailActionCodeSettings());
+  await sendCustomVerificationEmail(credential.user);
   return credential.user;
 };
 
@@ -33,7 +33,7 @@ export const registerWithVerification = async (email, password) => {
 export const resendVerificationEmail = async () => {
   const user = auth.currentUser;
   if (!user) throw new Error("ログインしていません");
-  await sendEmailVerification(user, getEmailActionCodeSettings());
+  await sendCustomVerificationEmail(user);
 };
 
 // メール内リンクからアプリに戻ったときに認証を完了する

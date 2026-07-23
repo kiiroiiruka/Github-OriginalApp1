@@ -1,0 +1,29 @@
+# Netlify デプロイ設定
+
+# フロントのビルドと公開先
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# サーバー側 API（netlify/functions/）
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+  external_node_modules = ["firebase-admin"]
+
+# npm run dev:netlify 用（Vite と連携）
+# targetPort = 5173でどのポートでローカルのfrontが動作しているのかを指定
+[dev]
+  command = "npm run dev"
+  targetPort = 5173
+  framework = "vite"
+  autoLaunch = false
+
+# /api/* → netlify/functions/ 内の対応ファイル
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# React Router 用の SPA リダイレクトは public/_redirects に記載（本番デプロイ時のみ dist に含まれる）
+# netlify dev では Vite がルーティングするため、ここに書くと JS 読み込みが壊れる

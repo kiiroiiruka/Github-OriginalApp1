@@ -17,6 +17,7 @@ import useMemoStore from "@/store/useMemoStore";
 import { trackScreenView } from "../firebase/client/analytics.js";
 import styles from "./App.module.css";
 import MemoList from "./pages/MemoList/MemoList";
+import SendEmailTest from "./pages/SendEmailTest/SendEmailTest";
 
 function MainRoutes() {
   const location = useLocation();
@@ -43,6 +44,7 @@ function MainRoutes() {
         <Route path="/memoList" element={<MemoList />} />
         <Route path="/memoData" element={<MemoData />} />
         <Route path="/addMemo" element={<AddMemo />} />
+        <Route path="/sendEmailTest" element={<SendEmailTest />} />
         <Route path="/deadline" element={<Navigate to="/" replace />} />
       </Routes>
 

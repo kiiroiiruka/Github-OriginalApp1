@@ -121,7 +121,7 @@ const VerifyEmail = () => {
 
       <AuthFeedback type="hint">
         メールが届かない場合は、迷惑メールフォルダもご確認ください。
-        送信元は Firebase（noreply@*.firebaseapp.com）です。
+        送信元はミニメモの確認メールです。
       </AuthFeedback>
 
       <AuthFeedback type="success">{message}</AuthFeedback>
