@@ -55,8 +55,6 @@ Firebase 認証・Firestore でユーザーごとにデータを同期し、PWA 
 |-----------|------|
 | [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) | PWA 対応（マニフェスト・Service Worker） |
 | [axios](https://axios-http.com/) | HTTP クライアント |
-| [wanakana](https://www.npmjs.com/package/wanakana) | ひらがな・カタカナ・ローマ字変換 |
-| [react-virtual-keyboard](https://www.npmjs.com/package/react-virtual-keyboard) | 仮想キーボード UI |
 
 ### 開発ツール
 
