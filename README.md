@@ -54,7 +54,6 @@ Firebase 認証・Firestore でユーザーごとにデータを同期し、PWA 
 | ライブラリ | 用途 |
 |-----------|------|
 | [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) | PWA 対応（マニフェスト・Service Worker） |
-| [axios](https://axios-http.com/) | HTTP クライアント |
 
 ### 開発ツール
 

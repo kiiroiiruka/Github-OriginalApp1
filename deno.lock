@@ -16,7 +16,6 @@
         "npm:@types/react@^19.1.8",
         "npm:@vitejs/plugin-react-swc@^3.10.2",
         "npm:@vitejs/plugin-react@^4.7.0",
-        "npm:axios@^1.11.0",
         "npm:firebase-admin@^13.4.0",
         "npm:firebase@^12.16.0",
         "npm:jotai@^2.12.5",
