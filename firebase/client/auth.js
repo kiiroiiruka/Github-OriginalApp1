@@ -1,6 +1,5 @@
 import {
   applyActionCode,
-  createUserWithEmailAndPassword,
   onAuthStateChanged,
   reload,
   signInWithEmailAndPassword,
@@ -9,34 +8,17 @@ import {
 import { sendVerificationEmail } from "../../src/api/sendVerificationEmail.js";
 import { auth } from "../config.js";
 
-const sendCustomVerificationEmail = async (user) => {
+export const login = (email, password) =>
+  signInWithEmailAndPassword(auth, email, password);
+
+// 旧フローで作成された未認証ユーザー向け
+export const resendVerificationEmail = async () => {
+  const user = auth.currentUser;
+  if (!user) throw new Error("ログインしていません");
   const idToken = await user.getIdToken();
   await sendVerificationEmail(idToken);
 };
 
-// ログイン
-export const login = (email, password) =>
-  signInWithEmailAndPassword(auth, email, password);
-
-// 新規登録 + 確認メール送信
-export const registerWithVerification = async (email, password) => {
-  const credential = await createUserWithEmailAndPassword(
-    auth,
-    email,
-    password,
-  );
-  await sendCustomVerificationEmail(credential.user);
-  return credential.user;
-};
-
-// 確認メールを再送
-export const resendVerificationEmail = async () => {
-  const user = auth.currentUser;
-  if (!user) throw new Error("ログインしていません");
-  await sendCustomVerificationEmail(user);
-};
-
-// メール内リンクからアプリに戻ったときに認証を完了する
 export const completeEmailVerificationFromUrl = async () => {
   const params = new URLSearchParams(window.location.search);
   const mode = params.get("mode");
@@ -50,20 +32,16 @@ export const completeEmailVerificationFromUrl = async () => {
   return updated;
 };
 
-// ユーザーの認証状態を再取得（メール確認後に使用）
 export const reloadUser = () => {
   const user = auth.currentUser;
   if (!user) return Promise.resolve(null);
   return reload(user).then(() => auth.currentUser);
 };
 
-// ログアウト
 export const logout = () => signOut(auth);
 
-// ログイン状態の監視
 export const subscribeAuth = (callback) => onAuthStateChanged(auth, callback);
 
-// Firebase Auth エラーを日本語メッセージに変換
 export const getAuthErrorMessage = (error) => {
   const code = error?.code ?? "";
   const messages = {

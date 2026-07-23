@@ -9,12 +9,15 @@ import useMemoSync from "@/hooks/useMemoSync";
 import useSettingsSync from "@/hooks/useSettingsSync";
 import AddMemo from "@/pages/AddMemo/AddMemo";
 import Auth from "@/pages/Auth/Auth";
+import CompleteRegistration from "@/pages/Auth/CompleteRegistration";
+import PendingRegistration from "@/pages/Auth/PendingRegistration";
 import VerifyEmail from "@/pages/Auth/VerifyEmail";
 import Deadline from "@/pages/Deadline/Deadline";
 import MemoData from "@/pages/MemoData/MemoData";
 import MemoHome from "@/pages/MemoHome/MemoHome";
 import useMemoStore from "@/store/useMemoStore";
 import { trackScreenView } from "../firebase/client/analytics.js";
+import { getPendingRegistration } from "../firebase/client/registration.js";
 import styles from "./App.module.css";
 import MemoList from "./pages/MemoList/MemoList";
 import SendEmailTest from "./pages/SendEmailTest/SendEmailTest";
@@ -56,13 +59,20 @@ function MainRoutes() {
     </>
   );
 }
-//ログイン状態に応じて表示させるページを切り替える
+
+/**
+ * 【新規登録フロー 振り分け】
+ *
+ * /complete-registration → CompleteRegistration.jsx（メールリンク用）
+ * それ以外 → AuthenticatedApp
+ *   未ログイン + localStorage に token あり → PendingRegistration.jsx
+ *   未ログイン + token なし → Auth.jsx
+ *   ログイン済み → MainRoutes（メモ画面など）
+ */
 function App() {
   const shouldRedirectHome = useRef(false);
-  //ログイン状態を取得
   const { user, loading, isEmailVerified } = useAuth();
 
-  //ログイン状態の確認
   useEffect(() => {
     if (loading) return;
 
@@ -71,30 +81,47 @@ function App() {
     }
   }, [user, loading, isEmailVerified]);
 
-  //loading中は読み込み中を表示
   if (loading) {
-    //App.module.cssのデザインをここでのみ使用
     return <div className={styles.loading}>読み込み中...</div>;
   }
 
-  //ログインしていない場合はログイン画面を表示
+  return (
+    <Routes>
+      <Route path="/complete-registration" element={<CompleteRegistration />} />
+      <Route
+        path="*"
+        element={
+          <AuthenticatedApp
+            user={user}
+            isEmailVerified={isEmailVerified}
+            shouldRedirectHome={shouldRedirectHome}
+          />
+        }
+      />
+    </Routes>
+  );
+}
+
+function AuthenticatedApp({ user, isEmailVerified, shouldRedirectHome }) {
+  //!userでFirebase にログインしていない状態
   if (!user) {
-    //ログイン画面を表示
+    // localStorage に仮トークンがあればメール確認待ち画面へ
+    if (getPendingRegistration()) {
+      return <PendingRegistration />;
+    }
+    //もしない場合は初期のログイン画面へ遷移
     return <Auth />;
   }
 
-  //メール認証していない場合はメール認証画面を表示
   if (!isEmailVerified) {
-    //メール認証画面を表示
     return <VerifyEmail />;
   }
-  // 認証フローを通った直後だけ、締切画面（/）へリダイレクトする
+
   if (shouldRedirectHome.current) {
     shouldRedirectHome.current = false;
     return <Navigate to="/" replace />;
   }
 
-  //アプリの各ページ内容を表示させる
   return <MainRoutes />;
 }
 

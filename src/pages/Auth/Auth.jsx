@@ -1,3 +1,13 @@
+/**
+ * 【新規登録フロー ① ログイン/登録画面】
+ *
+ * 呼び出し元: App.jsx → AuthenticatedApp（未ログイン時）
+ * 次に呼ぶ: firebase/client/registration.js → beginRegistration()
+ *
+ * 流れ:
+ *   メール入力 → beginRegistration() → ページ再読み込み
+ *   → App.jsx が localStorage を見て PendingRegistration を表示
+ */
 import { useState } from "react";
 import AuthHeader from "@/components/layout/auth/AuthHeader/AuthHeader";
 import AuthLayout from "@/components/layout/auth/AuthLayout/AuthLayout";
@@ -6,15 +16,9 @@ import AuthFeedback from "@/components/ui/auth/AuthFeedback/AuthFeedback";
 import AuthInput from "@/components/ui/auth/AuthInput/AuthInput";
 import AuthSubmitButton from "@/components/ui/auth/AuthSubmitButton/AuthSubmitButton";
 import AuthTextLink from "@/components/ui/auth/AuthTextLink/AuthTextLink";
-import {
-  getAuthErrorMessage,
-  login,
-  registerWithVerification,
-} from "../../../firebase/client/auth.js";
+import { getAuthErrorMessage, login } from "../../../firebase/client/auth.js";
+import { beginRegistration } from "../../../firebase/client/registration.js";
 
-/**
- * ログイン/登録画面の各ページの使いまわしコンポーネント。
- */
 const Auth = () => {
   const [mode, setMode] = useState("login");
   const [email, setEmail] = useState("");
@@ -30,11 +34,15 @@ const Auth = () => {
     try {
       if (mode === "login") {
         await login(email, password);
+        //ログイン成功したらホーム画面に遷移
       } else {
-        await registerWithVerification(email, password);
+        // → registration.js → startRegistration API → start-registration.js
+        //メールアドレス送る&仮トークン作成&確認メール送る&トークンをローカルストレージに保存
+        await beginRegistration(email);
+        window.location.reload();//ページを再読み込み(メール確認待ち画面に遷移される。)
       }
     } catch (err) {
-      setError(getAuthErrorMessage(err));
+      setError(err.message ?? getAuthErrorMessage(err));
     } finally {
       setSubmitting(false);
     }
@@ -43,6 +51,7 @@ const Auth = () => {
   const toggleMode = () => {
     setMode((prev) => (prev === "login" ? "register" : "login"));
     setError("");
+    setPassword("");
   };
 
   return (
@@ -51,9 +60,7 @@ const Auth = () => {
         title="ミニメモ"
         subtitle={mode === "login" ? "ログイン" : "新規登録"}
       />
-      {/*入力するのでform要素を使用*/}
       <AuthActions as="form" onSubmit={handleSubmit}>
-        {/*メールアドレスの入力項目コンポーネント設置*/}
         <AuthInput
           label="メールアドレス"
           type="email"
@@ -63,34 +70,31 @@ const Auth = () => {
           autoComplete="email"
         />
 
-        {/*パスワードの入力項目コンポーネント設置*/}
-        <AuthInput
-          label="パスワード"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          minLength={6}
-          autoComplete={mode === "login" ? "current-password" : "new-password"}
-        />
+        {mode === "login" && (
+          <AuthInput
+            label="パスワード"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            minLength={6}
+            autoComplete="current-password"
+          />
+        )}
 
-        {/*エラーメッセージを表示させる。(返ってきた{error}のメッセージ内容が表示される。)*/}
         <AuthFeedback type="error">{error}</AuthFeedback>
 
-        {/*ログインボタンコンポーネント設置*/}
         <AuthSubmitButton
-          label={mode === "login" ? "ログイン" : "登録する"}
+          label={mode === "login" ? "ログイン" : "確認メールを送信"}
           disabled={submitting}
         />
 
-        {/*hintで緑色のメッセージで囲ったメッセージを表示させる。(登録時のみ表示される。)*/}
         {mode === "register" && (
           <AuthFeedback type="hint">
-            登録後、確認メールが送信されます。メール内のリンクをクリックして認証を完了してください。
+            確認メールを送信します。メール内のリンクからパスワードを設定して登録を完了してください。
           </AuthFeedback>
         )}
       </AuthActions>
-      {/*ログインボタンと登録ボタンを切り替えるテキストリンクを表示させる。*/}
       <AuthTextLink onClick={toggleMode}>
         {mode === "login"
           ? "アカウントをお持ちでない方はこちら"
