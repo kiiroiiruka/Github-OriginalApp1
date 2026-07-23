@@ -1,16 +1,27 @@
-import { readFileSync } from "fs";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
+import { existsSync, readFileSync } from "fs";
+import { join } from "path";
 
 const ICON_CID = "app-icon";
-const __dirname = dirname(fileURLToPath(import.meta.url));
+
+function getIconPath() {
+  const candidates = [
+    join(process.cwd(), "netlify/functions/assets/icon.png"),
+    join(process.cwd(), "assets/icon.png"),
+  ];
+
+  for (const path of candidates) {
+    if (existsSync(path)) {
+      return path;
+    }
+  }
+
+  throw new Error("Email icon file not found");
+}
 
 export function getAppIconAttachment() {
-  const iconPath = join(__dirname, "../../assets/icon.png");
-
   return {
     filename: "icon.png",
-    content: readFileSync(iconPath),
+    content: readFileSync(getIconPath()),
     cid: ICON_CID,
   };
 }

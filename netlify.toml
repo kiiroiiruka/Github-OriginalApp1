@@ -10,6 +10,7 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
   external_node_modules = ["firebase-admin"]
+  included_files = ["netlify/functions/assets/**"]
 
 # npm run dev:netlify 用（Vite と連携）
 # targetPort = 5173でどのポートでローカルのfrontが動作しているのかを指定
